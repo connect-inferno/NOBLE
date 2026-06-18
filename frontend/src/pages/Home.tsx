@@ -15,7 +15,7 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
       btnText: "Explore Services",
       btnAction: "services",
       bgClass: "from-[#1a1a2e] to-[#0056b3]",
-      img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1200",
+      img: "/hero1.jpeg",
     },
     {
       badge: "24/7 Monitoring",
@@ -24,7 +24,7 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
       btnText: "Request Audit",
       btnAction: "contact",
       bgClass: "from-[#0056b3] to-[#0ABFBC]",
-      img: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=1200",
+      img: "/security-guard.jpeg",
     },
     {
       badge: "Elite Personnel",
@@ -163,9 +163,8 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
           {heroSlides.map((slide, index) => (
             <div
               key={index}
-              className={`hero-slide flex items-center justify-center bg-gradient-to-r ${
-                slide.bgClass
-              } ${index === currentSlide ? "active" : ""}`}
+              className={`hero-slide flex items-center justify-center bg-gradient-to-r ${slide.bgClass
+                } ${index === currentSlide ? "active" : ""}`}
             >
               <div className="absolute inset-0 bg-black/40"></div>
               <div className="relative z-20 text-center px-gutter max-w-4xl mt-16 md:mt-0">
@@ -217,9 +216,8 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-200 cursor-pointer ${
-                index === currentSlide ? "bg-white scale-125" : "bg-white/50"
-              }`}
+              className={`w-3 h-3 rounded-full transition-all duration-200 cursor-pointer ${index === currentSlide ? "bg-white scale-125" : "bg-white/50"
+                }`}
               aria-label={`Go to slide ${index + 1}`}
             ></button>
           ))}
@@ -300,11 +298,10 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
               <button
                 key={tab.key}
                 onClick={() => setActiveSector(tab.key)}
-                className={`whitespace-nowrap px-8 py-4 font-bold text-lg transition-all duration-200 cursor-pointer focus:outline-none ${
-                  activeSector === tab.key
-                    ? "text-primary border-b-3 border-primary"
-                    : "text-on-surface-variant hover:text-primary"
-                }`}
+                className={`whitespace-nowrap px-8 py-4 font-bold text-lg transition-all duration-200 cursor-pointer focus:outline-none ${activeSector === tab.key
+                  ? "text-primary border-b-3 border-primary"
+                  : "text-on-surface-variant hover:text-primary"
+                  }`}
               >
                 {tab.label}
               </button>
@@ -394,9 +391,8 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
           ].map((serv, index) => (
             <div
               key={index}
-              className={`flex flex-col lg:flex-row items-center gap-12 group border-b border-outline-variant/40 pb-12 last:border-none last:pb-0 ${
-                serv.isFlipped ? "lg:flex-row-reverse" : ""
-              }`}
+              className={`flex flex-col lg:flex-row items-center gap-12 group border-b border-outline-variant/40 pb-12 last:border-none last:pb-0 ${serv.isFlipped ? "lg:flex-row-reverse" : ""
+                }`}
             >
               <div className="lg:w-1/3 flex justify-center">
                 <div className="w-32 h-32 rounded-3xl bg-surface-container-high flex items-center justify-center group-hover:bg-primary transition-all duration-500 shadow-md">

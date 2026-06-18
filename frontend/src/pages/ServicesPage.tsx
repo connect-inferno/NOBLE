@@ -16,7 +16,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ setCurrentPage }) =>
         "Emergency Fire Safety & First-Aid Trained Personnel",
         "Patrolling with Digital Checkpoint Recording",
       ],
-      img: "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?auto=format&fit=crop&q=80&w=800",
+      img: "/security-guard.jpeg",
       icon: "shield",
       isFlipped: false,
     },
@@ -30,7 +30,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ setCurrentPage }) =>
         "Bank & Jewelry Showroom Armed Surveillance",
         "Regular Weapons Maintenance & Proficiency Testing",
       ],
-      img: "https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&q=80&w=800",
+      img: "/gunman.jpeg",
       icon: "security",
       isFlipped: true,
     },
@@ -44,7 +44,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ setCurrentPage }) =>
         "Effective Conflict De-escalation & Physical Deterrence",
         "Discreet & Professional VIP Entry Management",
       ],
-      img: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800",
+      img: "/bouncer.jpeg",
       icon: "group",
       isFlipped: false,
     },
@@ -58,7 +58,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ setCurrentPage }) =>
         "Washroom Sanitization & Hygiene Management",
         "Eco-friendly Chemical & Supply Management",
       ],
-      img: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&q=80&w=800",
+      img: "/housekeeping.jpeg",
       icon: "cleaning_services",
       isFlipped: true,
     },
@@ -111,20 +111,27 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ setCurrentPage }) =>
         <section
           key={serv.id}
           id={serv.id}
-          className={`py-section-padding-lg ${
-            index % 2 === 0 ? "bg-surface-container-lowest" : "bg-[#EEF4FF]"
-          }`}
+          className={`py-section-padding-lg ${index % 2 === 0 ? "bg-surface-container-lowest" : "bg-[#EEF4FF]"
+            }`}
         >
           <div
-            className={`max-w-container-max mx-auto px-gutter flex flex-col items-center gap-16 ${
-              serv.isFlipped ? "lg:flex-row-reverse" : "lg:flex-row"
-            }`}
+            className={`max-w-container-max mx-auto px-gutter flex flex-col items-center gap-16 ${serv.isFlipped ? "lg:flex-row-reverse" : "lg:flex-row"
+              }`}
           >
             {/* Image Container */}
-            <div className="w-full lg:w-1/2 rounded-2xl overflow-hidden service-card-shadow aspect-[4/3] relative">
+            <div className="w-full lg:w-1/2 rounded-2xl overflow-hidden service-card-shadow aspect-[4/3] relative bg-neutral-900/10 flex items-center justify-center">
+              {(serv.id === "armed" || serv.id === "housekeeping") && (
+                <img
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover blur-md scale-105 opacity-40 pointer-events-none"
+                  src={serv.img}
+                />
+              )}
               <img
                 alt={serv.title}
-                className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                className={`w-full h-full relative z-10 transition-transform duration-500 hover:scale-105 ${
+                  serv.id === "armed" || serv.id === "housekeeping" ? "object-contain p-4" : "object-cover"
+                }`}
                 src={serv.img}
               />
             </div>
