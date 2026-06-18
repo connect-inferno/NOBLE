@@ -61,11 +61,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, setCurrentPage }) =
 
       {/* Navigation Header */}
       <header
-        className={`fixed w-full z-50 transition-all duration-300 ${
-          isScrolled
+        className={`fixed w-full z-50 transition-all duration-300 ${isScrolled
             ? "top-0 py-2 glass-nav soft-blue-shadow border-b border-outline-variant"
             : "top-0 md:top-10 py-4 bg-surface-container-lowest md:bg-white border-b border-outline-variant md:border-none"
-        }`}
+          }`}
       >
         <div className="flex justify-between items-center px-gutter max-w-container-max mx-auto">
           {/* Logo */}
@@ -89,11 +88,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, setCurrentPage }) =
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`font-label-md text-label-md cursor-pointer transition-colors duration-200 focus:outline-none ${
-                  currentPage === item.id
+                className={`font-label-md text-label-md cursor-pointer transition-colors duration-200 focus:outline-none ${currentPage === item.id
                     ? "text-primary border-b-2 border-primary font-bold pb-1"
                     : "text-on-surface-variant hover:text-primary"
-                }`}
+                  }`}
               >
                 {item.label}
               </button>
@@ -121,9 +119,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, setCurrentPage }) =
 
       {/* Mobile Drawer Overlay */}
       <div
-        className={`fixed inset-0 z-[60] bg-on-background bg-opacity-95 flex flex-col p-8 transition-transform duration-300 md:hidden ${
-          isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed inset-0 z-[60] bg-on-background bg-opacity-95 flex flex-col p-8 transition-transform duration-300 md:hidden ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         <div className="flex justify-between items-center mb-12">
           <span className="font-headline-md text-headline-md font-bold text-primary-fixed">
@@ -142,9 +139,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, setCurrentPage }) =
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`font-headline-md text-headline-md text-left cursor-pointer transition-colors focus:outline-none ${
-                currentPage === item.id ? "text-primary-fixed font-bold" : "text-secondary-fixed-dim"
-              }`}
+              className={`font-headline-md text-headline-md text-left cursor-pointer transition-colors focus:outline-none ${currentPage === item.id ? "text-primary-fixed font-bold" : "text-secondary-fixed-dim"
+                }`}
             >
               {item.label}
             </button>

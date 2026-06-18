@@ -29,19 +29,29 @@ export const About: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div className="relative group">
             <div className="absolute -inset-4 bg-primary/10 rounded-2xl blur-2xl group-hover:bg-primary/20 transition-all duration-700"></div>
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-white p-8 border border-outline-variant/30">
-              <img
-                alt="Security Shield"
-                className="w-full h-[350px] md:h-[450px] object-cover rounded-xl transition-transform duration-700 group-hover:scale-105"
-                src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800"
-              />
-              <div className="absolute bottom-12 right-12 bg-primary p-6 rounded-2xl shadow-xl animate-float">
-                <span
-                  className="material-symbols-outlined text-white text-[48px]"
-                  style={{ fontVariationSettings: "'FILL' 1" }}
-                >
-                  verified_user
-                </span>
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-white p-6 md:p-8 border border-outline-variant/30 flex flex-col items-center">
+              <div className="w-full max-w-[320px] relative rounded-xl overflow-hidden aspect-[1080/1744]">
+                <img
+                  alt="Madhukar Pandurang Narale - Founder & Director"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  src="/mn.jpeg"
+                />
+                <div className="absolute bottom-6 right-6 z-20 bg-primary p-4 rounded-xl shadow-lg animate-float">
+                  <span
+                    className="material-symbols-outlined text-white text-[28px]"
+                    style={{ fontVariationSettings: "'FILL' 1" }}
+                  >
+                    verified_user
+                  </span>
+                </div>
+              </div>
+              <div className="mt-6 text-center space-y-1">
+                <h4 className="font-headline-md text-[20px] font-bold text-on-surface">
+                  Madhukar Pandurang Narale
+                </h4>
+                <p className="text-primary font-label-md font-bold uppercase tracking-wider">
+                  Founder & Director
+                </p>
               </div>
             </div>
           </div>
@@ -180,13 +190,8 @@ export const About: React.FC = () => {
               Our leadership team brings together decades of experience in defence, corporate security, and operational management.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {[
-              {
-                name: "Madhukar Pandurang Narale",
-                role: "Founder & Director",
-                img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400",
-              },
               {
                 name: "Rajesh Kumar",
                 role: "Operations Head",
@@ -198,8 +203,8 @@ export const About: React.FC = () => {
                 img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400",
               },
             ].map((leader, idx) => (
-              <div key={idx} className="group flex flex-col items-center md:items-start text-center md:text-left">
-                <div className="relative rounded-2xl overflow-hidden aspect-[3/4] mb-6 w-full max-w-[320px] md:max-w-none shadow-lg">
+              <div key={idx} className="group flex flex-col items-center text-center">
+                <div className="relative rounded-2xl overflow-hidden aspect-[3/4] mb-6 w-full max-w-[300px] shadow-lg mx-auto">
                   <img
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     src={leader.img}
@@ -284,7 +289,7 @@ export const About: React.FC = () => {
                 <img
                   alt="Security Training"
                   className="w-full h-full object-cover"
-                  src="https://images.unsplash.com/photo-1521791136368-1a46827d0505?auto=format&fit=crop&q=80&w=800"
+                  src="/sg2.jpeg"
                 />
               </div>
             </div>
