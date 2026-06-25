@@ -1,20 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 interface HomeProps {
   setCurrentPage: (page: string) => void;
 }
 
+// Hook for intersection observer scroll reveals
+function useReveal(threshold = 0.15) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+      { threshold }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold]);
+  return { ref, visible };
+}
+
 export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
-  // Hero Slider State
   const [currentSlide, setCurrentSlide] = useState(0);
   const heroSlides = [
     {
       badge: "Premium Security Solutions",
-      title: "Protecting People. Securing Futures.",
+      title: "Protecting People.\nSecuring Futures.",
       desc: "Providing high-end guarding and IT-driven security services with military precision across India.",
       btnText: "Explore Services",
       btnAction: "services",
-      bgClass: "from-[#1a1a2e] to-[#0056b3]",
       img: "/hero1.jpeg",
     },
     {
@@ -23,679 +38,678 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
       desc: "Advanced surveillance and physical protection tailored for industrial and corporate complexes.",
       btnText: "Request Audit",
       btnAction: "contact",
-      bgClass: "from-[#0056b3] to-[#0ABFBC]",
       img: "/security-guard.jpeg",
     },
     {
       badge: "Elite Personnel",
-      title: "Military Discipline.",
+      title: "Military\nDiscipline.",
       desc: "Our workforce is trained to the highest standards of integrity, response, and professional etiquette.",
       btnText: "Meet Our Leaders",
       btnAction: "about",
-      bgClass: "from-[#1a1a2e] to-[#425e91]",
-      img: "https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?auto=format&fit=crop&q=80&w=1200",
+      img: "/sg2.jpeg",
     },
   ];
 
   useEffect(() => {
-    const slideTimer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 5000);
-    return () => clearInterval(slideTimer);
+    const t = setInterval(() => setCurrentSlide(p => (p + 1) % heroSlides.length), 5500);
+    return () => clearInterval(t);
   }, [heroSlides.length]);
 
-  // Sector Tabs State
   const [activeSector, setActiveSector] = useState("industries");
-  const sectors = {
+  const sectors: Record<string, { title: string; desc: string; points: string[]; img: string }> = {
     industries: {
       title: "Industrial Security",
       desc: "Securing vast manufacturing units with perimeter patrol, access control, and material movement tracking. Our guards are trained in fire safety and emergency evacuation protocols specific to industrial hazards.",
-      points: [
-        "Perimeter Patrol & Fencing Audit",
-        "Raw Material Gate Management",
-        "24/7 Control Room Monitoring",
-      ],
+      points: ["Perimeter Patrol & Fencing Audit", "Raw Material Gate Management", "24/7 Control Room Monitoring"],
       img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800",
     },
     banks: {
       title: "Banking & Finance",
       desc: "High-alert security for financial institutions requiring strict access protocols and armed presence. We specialize in ATM guarding and vault protection services.",
-      points: [
-        "Armed Guard Deployment",
-        "ATM Monitoring",
-        "Secure Cash Transit Support",
-      ],
+      points: ["Armed Guard Deployment", "ATM Monitoring", "Secure Cash Transit Support"],
       img: "https://images.unsplash.com/photo-1621416848469-9c5181bb5269?auto=format&fit=crop&q=80&w=800",
     },
     schools: {
       title: "Educational Institutions",
       desc: "Child-safety oriented security for schools and universities. Our staff is trained in school-specific behavioral etiquette and emergency protocols.",
-      points: [
-        "Child-Safety Trained Staff",
-        "Visitor Management Systems",
-        "Emergency Drill Management",
-      ],
+      points: ["Child-Safety Trained Staff", "Visitor Management Systems", "Emergency Drill Management"],
       img: "https://images.unsplash.com/photo-1523050335456-c7bb74ae330d?auto=format&fit=crop&q=80&w=800",
     },
     hospitals: {
       title: "Hospitality & Healthcare",
-      desc: "24/7 vigil for medical centers focusing on crowd management and sensitive area protection (ICU/NICU).",
-      points: [
-        "Patient Wing Monitoring",
-        "Crowd Control",
-        "Incident Reporting",
-      ],
+      desc: "24/7 vigil for medical centers focusing on crowd management and sensitive area protection.",
+      points: ["Patient Wing Monitoring", "Crowd Control", "Incident Reporting"],
       img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800",
     },
     corporate: {
       title: "Corporate Parks",
       desc: "Front-office integrated security that manages corporate visitor experiences while maintaining strict entry-exit logs.",
-      points: [
-        "Digital Visitor Logging",
-        "Valet & Parking Security",
-        "BMS Integration",
-      ],
+      points: ["Digital Visitor Logging", "Valet & Parking Security", "BMS Integration"],
       img: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800",
     },
   };
 
-  // Stats Counters state
   const [stats, setStats] = useState({ guards: 0, cities: 0, experience: 0 });
+  const statsRef = useRef<HTMLDivElement>(null);
+  const statsCounted = useRef(false);
   useEffect(() => {
-    // Basic counter animation on page mount
-    const duration = 1500;
-    const steps = 50;
-    const intervalTime = duration / steps;
-    let step = 0;
-
-    const timer = setInterval(() => {
-      step++;
-      setStats({
-        guards: Math.min(Math.ceil((500 / steps) * step), 500),
-        cities: Math.min(Math.ceil((6 / steps) * step), 6),
-        experience: Math.min(Math.ceil((9 / steps) * step), 9),
-      });
-
-      if (step >= steps) {
-        clearInterval(timer);
+    const el = statsRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !statsCounted.current) {
+        statsCounted.current = true;
+        const steps = 60; const dur = 1800; const interval = dur / steps;
+        let s = 0;
+        const t = setInterval(() => {
+          s++;
+          setStats({ guards: Math.min(Math.ceil(500 / steps * s), 500), cities: Math.min(Math.ceil(6 / steps * s), 6), experience: Math.min(Math.ceil(9 / steps * s), 9) });
+          if (s >= steps) clearInterval(t);
+        }, interval);
       }
-    }, intervalTime);
-
-    return () => clearInterval(timer);
+    }, { threshold: 0.3 });
+    obs.observe(el);
+    return () => obs.disconnect();
   }, []);
 
-  // Form State
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    serviceType: "Security Guards",
-    message: "",
-  });
+  const [formData, setFormData] = useState({ name: "", phone: "", serviceType: "Security Guards", message: "" });
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(p => ({ ...p, [name]: value }));
   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.phone) {
-      alert("Please enter your name and phone number.");
-      return;
-    }
-    // Simulate API request
+    if (!formData.name || !formData.phone) { alert("Please enter your name and phone number."); return; }
     setIsSubmitted(true);
     setTimeout(() => {
       setFormData({ name: "", phone: "", serviceType: "Security Guards", message: "" });
       setIsSubmitted(false);
-      alert("Thank you! Your enquiry has been received successfully. Our team will contact you shortly.");
+      alert("Thank you! Your enquiry has been received. Our team will contact you shortly.");
     }, 1500);
   };
 
+  // Reveal hooks
+  const aboutReveal = useReveal();
+  const sectorsReveal = useReveal();
+  const servicesReveal = useReveal();
+  const advantageReveal = useReveal();
+  const testimonialsReveal = useReveal();
+  const contactReveal = useReveal();
+
   return (
-    <div className="w-full">
-      {/* Fullscreen Hero Slider */}
-      <section className="relative h-[85vh] md:h-screen overflow-hidden">
-        <div className="h-full w-full relative">
-          {heroSlides.map((slide, index) => (
-            <div
-              key={index}
-              className={`hero-slide flex items-center justify-center bg-gradient-to-r ${slide.bgClass
-                } ${index === currentSlide ? "active" : ""}`}
-            >
-              <div className="absolute inset-0 bg-black/40"></div>
-              <div className="relative z-20 text-center px-gutter max-w-4xl mt-16 md:mt-0">
-                <span className="inline-block bg-tertiary-fixed text-on-tertiary-fixed px-4 py-1 rounded-full font-label-sm text-label-sm mb-6 uppercase tracking-wider">
-                  {slide.badge}
-                </span>
-                <h1 className="font-display-lg text-display-lg-mobile md:text-display-lg text-white mb-6 md:mb-8 leading-tight">
-                  {slide.title}
-                </h1>
-                <p className="text-white/80 font-body-lg text-body-lg mb-8 md:mb-10 max-w-2xl mx-auto">
-                  {slide.desc}
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button
-                    onClick={() => {
-                      if (slide.btnAction === "services") setCurrentPage("services");
-                      if (slide.btnAction === "contact") setCurrentPage("contact");
-                      if (slide.btnAction === "about") setCurrentPage("about");
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                    }}
-                    className="bg-[#ba1a1a] text-white px-8 py-4 rounded-full font-bold hover:scale-105 transition-transform duration-200 cursor-pointer shadow-lg"
-                  >
-                    {slide.btnText}
-                  </button>
-                  <button
-                    onClick={() => {
-                      setCurrentPage("contact");
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                    }}
-                    className="border-2 border-white text-white px-8 py-4 rounded-full font-bold hover:bg-white/10 transition-all duration-200 cursor-pointer"
-                  >
-                    Contact Us Now
-                  </button>
+    <>
+      <style>{`
+        /* ---- Hero ---- */
+        .hero-slide {
+          position: absolute;
+          inset: 0;
+          opacity: 0;
+          transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+          pointer-events: none;
+        }
+        .hero-slide.active {
+          opacity: 1;
+          pointer-events: auto;
+        }
+        .hero-slide img {
+          transition: transform 6s ease-out;
+          transform: scale(1.04);
+        }
+        .hero-slide.active img {
+          transform: scale(1);
+        }
+        /* gradient: only bottom fade, no overall dark blanket */
+        .hero-gradient {
+          background: linear-gradient(
+            to top,
+            rgba(10,10,20,0.82) 0%,
+            rgba(10,10,20,0.35) 45%,
+            rgba(10,10,20,0.10) 100%
+          );
+        }
+        /* left-side content vignette */
+        .hero-vignette {
+          background: linear-gradient(
+            to right,
+            rgba(10,10,20,0.72) 0%,
+            rgba(10,10,20,0.20) 55%,
+            transparent 100%
+          );
+        }
+
+        /* ---- Scroll reveals ---- */
+        .reveal {
+          opacity: 0;
+          transform: translateY(32px);
+          transition: opacity 0.72s cubic-bezier(0.4,0,0.2,1), transform 0.72s cubic-bezier(0.4,0,0.2,1);
+        }
+        .reveal.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .reveal-left {
+          opacity: 0;
+          transform: translateX(-40px);
+          transition: opacity 0.72s cubic-bezier(0.4,0,0.2,1), transform 0.72s cubic-bezier(0.4,0,0.2,1);
+        }
+        .reveal-left.visible {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        .reveal-right {
+          opacity: 0;
+          transform: translateX(40px);
+          transition: opacity 0.72s cubic-bezier(0.4,0,0.2,1), transform 0.72s cubic-bezier(0.4,0,0.2,1);
+        }
+        .reveal-right.visible {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        .stagger > * {
+          opacity: 0;
+          transform: translateY(24px);
+          transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1);
+        }
+        .stagger.visible > *:nth-child(1) { opacity:1; transform:translateY(0); transition-delay:0ms; }
+        .stagger.visible > *:nth-child(2) { opacity:1; transform:translateY(0); transition-delay:100ms; }
+        .stagger.visible > *:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:200ms; }
+        .stagger.visible > *:nth-child(4) { opacity:1; transform:translateY(0); transition-delay:300ms; }
+        .stagger.visible > *:nth-child(5) { opacity:1; transform:translateY(0); transition-delay:400ms; }
+
+        /* ---- Service strips ---- */
+        .service-strip {
+          border-bottom: 1px solid rgba(0,0,0,0.08);
+          padding: 3rem 0;
+          transition: background 0.3s;
+        }
+        .service-strip:last-child { border-bottom: none; }
+        .service-strip:hover { background: #fafafa; }
+
+        /* ---- Sector tabs ---- */
+        .sector-tab {
+          position: relative;
+          padding: 0.75rem 1.5rem;
+          font-weight: 600;
+          font-size: 0.9rem;
+          letter-spacing: 0.02em;
+          color: #666;
+          cursor: pointer;
+          transition: color 0.2s;
+          white-space: nowrap;
+          border: none;
+          background: none;
+        }
+        .sector-tab::after {
+          content: '';
+          position: absolute;
+          bottom: -1px;
+          left: 0; right: 0;
+          height: 2px;
+          background: var(--md-sys-color-primary, #0056b3);
+          transform: scaleX(0);
+          transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+        }
+        .sector-tab.active { color: var(--md-sys-color-primary, #0056b3); }
+        .sector-tab.active::after { transform: scaleX(1); }
+        .sector-tab:hover { color: var(--md-sys-color-primary, #0056b3); }
+
+        /* ---- Stat number ---- */
+        .stat-num {
+          font-size: clamp(3rem, 7vw, 5.5rem);
+          font-weight: 800;
+          line-height: 1;
+          letter-spacing: -0.03em;
+        }
+
+        /* ---- Testimonial card ---- */
+        .testimonial-card {
+          background: #fff;
+          border: 1px solid rgba(0,0,0,0.07);
+          border-radius: 1.25rem;
+          padding: 2.5rem;
+          transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .testimonial-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 20px 40px rgba(0,0,80,0.08);
+        }
+
+        /* ---- Advantage card ---- */
+        .advantage-card {
+          padding: 2rem;
+          border-radius: 1rem;
+          border: 1px solid rgba(0,0,0,0.07);
+          transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+          background: #fff;
+        }
+        .advantage-card:hover {
+          border-color: var(--md-sys-color-primary, #0056b3);
+          box-shadow: 0 12px 32px rgba(0,86,179,0.10);
+          transform: translateY(-3px);
+        }
+
+        /* ---- Input focus ---- */
+        .noble-input {
+          width: 100%;
+          padding: 0.9rem 1.25rem;
+          border-radius: 0.625rem;
+          border: 1.5px solid #e0e0e0;
+          outline: none;
+          font-size: 0.95rem;
+          transition: border-color 0.2s, box-shadow 0.2s;
+          background: #fafafa;
+        }
+        .noble-input:focus {
+          border-color: var(--md-sys-color-primary, #0056b3);
+          box-shadow: 0 0 0 3px rgba(0,86,179,0.12);
+          background: #fff;
+        }
+
+        /* ---- Dot slider ---- */
+        .hero-dot {
+          width: 8px; height: 8px;
+          border-radius: 50%;
+          background: rgba(255,255,255,0.45);
+          cursor: pointer;
+          transition: width 0.3s, background 0.3s;
+          border: none;
+        }
+        .hero-dot.active {
+          width: 28px;
+          border-radius: 4px;
+          background: #fff;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .reveal, .reveal-left, .reveal-right, .stagger > * { transition: none; opacity: 1; transform: none; }
+        }
+      `}</style>
+
+      <div className="w-full">
+
+        {/* ─── HERO ─── */}
+        <section className="relative h-[90vh] md:h-screen overflow-hidden bg-[#080c18]">
+          {heroSlides.map((slide, i) => (
+            <div key={i} className={`hero-slide ${i === currentSlide ? "active" : ""}`}>
+              <img
+                src={slide.img}
+                alt={slide.title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              {/* bottom gradient */}
+              <div className="hero-gradient absolute inset-0" />
+              {/* left vignette */}
+              <div className="hero-vignette absolute inset-0" />
+            </div>
+          ))}
+
+          {/* Hero content — left aligned */}
+          <div className="relative z-20 h-full flex items-end md:items-center">
+            <div className="px-8 md:px-16 lg:px-24 pb-24 md:pb-0 max-w-3xl">
+              <span
+                key={currentSlide + "-badge"}
+                className="inline-block text-xs font-semibold uppercase tracking-[0.16em] text-white/70 mb-5"
+                style={{ animation: "fadeUp 0.6s both" }}
+              >
+                {heroSlides[currentSlide].badge}
+              </span>
+              <h1
+                key={currentSlide + "-title"}
+                className="text-white font-extrabold leading-[1.07] mb-6"
+                style={{ fontSize: "clamp(2.4rem, 6vw, 4.5rem)", whiteSpace: "pre-line", animation: "fadeUp 0.7s 0.08s both" }}
+              >
+                {heroSlides[currentSlide].title}
+              </h1>
+              <p
+                key={currentSlide + "-desc"}
+                className="text-white/75 text-lg leading-relaxed mb-10 max-w-xl"
+                style={{ animation: "fadeUp 0.7s 0.18s both" }}
+              >
+                {heroSlides[currentSlide].desc}
+              </p>
+              <div className="flex flex-wrap gap-4" style={{ animation: "fadeUp 0.7s 0.28s both" }}>
+                <button
+                  onClick={() => { setCurrentPage(heroSlides[currentSlide].btnAction); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                  className="bg-[#ba1a1a] text-white px-8 py-3.5 rounded-full font-bold text-sm tracking-wide hover:bg-[#9e1515] transition-colors shadow-lg"
+                >
+                  {heroSlides[currentSlide].btnText}
+                </button>
+                <button
+                  onClick={() => { setCurrentPage("contact"); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                  className="border border-white/50 text-white px-8 py-3.5 rounded-full font-bold text-sm tracking-wide hover:bg-white/10 transition-colors"
+                >
+                  Contact Us
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Dots */}
+          <div className="absolute bottom-8 left-8 md:left-16 lg:left-24 z-30 flex gap-2 items-center">
+            {heroSlides.map((_, i) => (
+              <button key={i} onClick={() => setCurrentSlide(i)} className={`hero-dot ${i === currentSlide ? "active" : ""}`} aria-label={`Slide ${i + 1}`} />
+            ))}
+          </div>
+
+          {/* Slide counter */}
+          <div className="absolute bottom-8 right-8 z-30 text-white/50 text-xs font-mono tracking-widest">
+            0{currentSlide + 1} / 0{heroSlides.length}
+          </div>
+
+          <style>{`
+            @keyframes fadeUp {
+              from { opacity: 0; transform: translateY(20px); }
+              to   { opacity: 1; transform: translateY(0); }
+            }
+          `}</style>
+        </section>
+
+        {/* ─── ABOUT ─── */}
+        <section className="py-24 bg-white" id="about">
+          <div
+            ref={aboutReveal.ref}
+            className="max-w-6xl mx-auto px-6 md:px-12 flex flex-col lg:flex-row gap-16 items-start"
+          >
+            <div className={`lg:w-[52%] reveal-left ${aboutReveal.visible ? "visible" : ""}`}>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#ba1a1a] mb-4">About Noble</p>
+              <h2 className="font-extrabold text-[#0a0c18] leading-tight mb-6" style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.75rem)" }}>
+                A Legacy of Trust<br />and Vigilance
+              </h2>
+              <p className="text-[#444] text-[1.05rem] leading-[1.8] mb-6">
+                Established in 2015, Noble Security & Services has evolved from a local guarding firm into a premier pan-India security partner. We combine the rigorous discipline of former military personnel with cutting-edge surveillance technology to provide a protective shield for your assets.
+              </p>
+              <p className="text-[#666] leading-[1.8] mb-10 text-[0.95rem]">
+                Our commitment to compliance — PSARA, GST, EPF — and our rigorous recruitment standards ensure that every guard at your gate represents the Noble standard of integrity and excellence.
+              </p>
+              <div className="flex items-center gap-4">
+                <img
+                  className="w-14 h-14 rounded-full object-cover"
+                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=150"
+                  alt="Col. R.S. Sharma"
+                />
+                <div>
+                  <p className="font-bold text-[#0a0c18] text-sm">Col. (Retd) R.S. Sharma</p>
+                  <p className="text-[#888] text-xs mt-0.5">Director of Operations</p>
                 </div>
               </div>
-              <div className="absolute inset-0 -z-10">
-                <img
-                  className="w-full h-full object-cover opacity-50"
-                  src={slide.img}
-                  alt={slide.title}
-                />
-              </div>
             </div>
-          ))}
-        </div>
-        {/* Slider dots */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-4">
-          {heroSlides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-200 cursor-pointer ${index === currentSlide ? "bg-white scale-125" : "bg-white/50"
-                }`}
-              aria-label={`Go to slide ${index + 1}`}
-            ></button>
-          ))}
-        </div>
-      </section>
 
-      {/* About Intro Section */}
-      <section className="py-section-padding-lg bg-white" id="about">
-        <div className="max-w-container-max mx-auto px-gutter flex flex-col lg:flex-row gap-16 items-center">
-          <div className="lg:w-[55%]">
-            <h2 className="font-headline-lg text-headline-lg text-primary mb-6">
-              A Legacy of Trust and Vigilance
-            </h2>
-            <p className="font-body-lg text-body-lg text-on-surface-variant mb-8 leading-relaxed">
-              Established in 2015, Noble Security & Services has evolved from a local guarding firm into a premier pan-India security partner. We combine the rigorous discipline of former military personnel with cutting-edge surveillance technology to provide a protective shield for your assets.
-            </p>
-            <p className="font-body-md text-body-md text-on-surface-variant mb-10 leading-relaxed">
-              Our commitment to compliance (PSARA, GST, EPF) and our rigorous recruitment standards ensure that every guard at your gate represents the "Noble" standard of integrity and excellence.
-            </p>
-            <div className="flex items-center gap-6">
-              <img
-                className="w-20 h-20 rounded-full object-cover shadow-md"
-                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=150"
-                alt="Col. R.S. Sharma"
-              />
-              <div>
-                <p className="font-bold text-on-surface">Col. (Retd) R.S. Sharma</p>
-                <p className="text-on-surface-variant text-label-md font-label-md">
-                  Director of Operations
-                </p>
-              </div>
+            <div className={`lg:w-[48%] grid grid-cols-2 gap-4 w-full reveal-right ${aboutReveal.visible ? "visible" : ""}`} style={{ transitionDelay: "100ms" }}>
+              {[
+                { icon: "timeline", label: "Our Journey", value: "9+ Years" },
+                { icon: "military_tech", label: "Recognition", value: "Top Firm 2023" },
+                { icon: "groups", label: "Leadership", value: "Ex-Military" },
+                { icon: "map", label: "Coverage", value: "6+ Cities" },
+              ].map((c, i) => (
+                <div key={i} className="advantage-card flex flex-col gap-3 p-6">
+                  <span className="material-symbols-outlined text-primary text-3xl">{c.icon}</span>
+                  <div>
+                    <div className="font-bold text-[#0a0c18] text-lg">{c.value}</div>
+                    <div className="text-[#888] text-xs mt-0.5">{c.label}</div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
+        </section>
 
-          <div className="lg:w-[45%] grid grid-cols-2 gap-4 w-full">
-            {[
-              { icon: "timeline", title: "Our Journey", desc: "9+ Years of Excellence" },
-              { icon: "military_tech", title: "Awards", desc: "Top Security Firm 2023" },
-              { icon: "groups", title: "Leadership", desc: "Ex-Military Command" },
-              { icon: "map", title: "Locations", desc: "Serving 6+ Major Cities" },
-            ].map((card, index) => (
-              <div
-                key={index}
-                className="bg-surface-container-low p-8 rounded-2xl soft-blue-shadow-hover transition-all duration-300 text-center border border-outline-variant/50"
-              >
-                <span className="material-symbols-outlined text-primary text-4xl mb-4">
-                  {card.icon}
-                </span>
-                <h4 className="font-bold text-on-surface mb-2">{card.title}</h4>
-                <p className="text-label-sm text-on-surface-variant">{card.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        {/* ─── SECTORS ─── */}
+        <section className="py-24 bg-[#f7f8fb]">
+          <div
+            ref={sectorsReveal.ref}
+            className={`max-w-6xl mx-auto px-6 md:px-12 reveal ${sectorsReveal.visible ? "visible" : ""}`}
+          >
+            <div className="mb-12">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#ba1a1a] mb-3">Expertise</p>
+              <h2 className="font-extrabold text-[#0a0c18] mb-2" style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)" }}>
+                Sectors We Serve
+              </h2>
+              <p className="text-[#666] max-w-xl">
+                Tailored security protocols for diverse environments, ensuring compliance, safety, and operational continuity.
+              </p>
+            </div>
 
-      {/* Sectors We Serve */}
-      <section className="py-section-padding-lg bg-surface-container-low">
-        <div className="max-w-container-max mx-auto px-gutter">
-          <div className="text-center mb-12">
-            <h2 className="font-headline-lg text-headline-lg text-primary mb-4">
-              Specialized Sectors We Serve
-            </h2>
-            <p className="text-on-surface-variant max-w-2xl mx-auto">
-              Tailored security protocols for diverse environments, ensuring compliance, safety, and operational continuity.
-            </p>
-          </div>
+            <div className="border-b border-[#e4e6ee] flex gap-1 overflow-x-auto mb-10 hide-scrollbar">
+              {[
+                { key: "industries", label: "Industrial" },
+                { key: "banks", label: "Banking & Finance" },
+                { key: "schools", label: "Education" },
+                { key: "hospitals", label: "Healthcare" },
+                { key: "corporate", label: "Corporate" },
+              ].map(t => (
+                <button key={t.key} onClick={() => setActiveSector(t.key)} className={`sector-tab ${activeSector === t.key ? "active" : ""}`}>
+                  {t.label}
+                </button>
+              ))}
+            </div>
 
-          {/* Sector Tabs Nav */}
-          <div className="flex gap-4 overflow-x-auto hide-scrollbar pb-4 mb-8 border-b border-outline-variant">
-            {[
-              { key: "industries", label: "Industries" },
-              { key: "banks", label: "Banking & Finance" },
-              { key: "schools", label: "Education" },
-              { key: "hospitals", label: "Hospitals" },
-              { key: "corporate", label: "Corporate Parks" },
-            ].map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => setActiveSector(tab.key)}
-                className={`whitespace-nowrap px-8 py-4 font-bold text-lg transition-all duration-200 cursor-pointer focus:outline-none ${activeSector === tab.key
-                  ? "text-primary border-b-3 border-primary"
-                  : "text-on-surface-variant hover:text-primary"
-                  }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Active Sector Display */}
-          {Object.entries(sectors).map(
-            ([key, data]) =>
-              activeSector === key && (
-                <div
-                  key={key}
-                  className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[400px] animate-in fade-in duration-500"
-                >
-                  <div className="space-y-6">
-                    <h3 className="font-headline-md text-headline-md text-primary">
-                      {data.title}
-                    </h3>
-                    <p className="text-body-lg text-on-surface-variant leading-relaxed">
-                      {data.desc}
-                    </p>
-                    <ul className="space-y-4">
+            {Object.entries(sectors).map(([key, data]) =>
+              activeSector === key ? (
+                <div key={key} className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center" style={{ animation: "fadeUp 0.5s both" }}>
+                  <div className="space-y-5">
+                    <h3 className="font-bold text-[#0a0c18]" style={{ fontSize: "clamp(1.3rem, 2.5vw, 1.9rem)" }}>{data.title}</h3>
+                    <p className="text-[#555] leading-relaxed">{data.desc}</p>
+                    <ul className="space-y-3 pt-2">
                       {data.points.map((pt, i) => (
-                        <li key={i} className="flex items-center gap-3 text-on-surface">
-                          <span className="material-symbols-outlined text-tertiary">
-                            check_circle
+                        <li key={i} className="flex items-center gap-3 text-[#333] text-sm">
+                          <span className="w-5 h-5 rounded-full bg-[#ba1a1a]/10 flex items-center justify-center shrink-0">
+                            <span className="material-symbols-outlined text-[#ba1a1a]" style={{ fontSize: "14px" }}>check</span>
                           </span>
                           {pt}
                         </li>
                       ))}
                     </ul>
                   </div>
-                  <div className="rounded-3xl overflow-hidden shadow-2xl relative aspect-[4/3] max-h-[400px]">
-                    <img
-                      src={data.img}
-                      alt={data.title}
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="rounded-2xl overflow-hidden aspect-[4/3] max-h-[380px] shadow-lg">
+                    <img src={data.img} alt={data.title} className="w-full h-full object-cover" />
                   </div>
                 </div>
-              )
-          )}
-        </div>
-      </section>
-
-      {/* Core Competencies Alternating Strips */}
-      <section className="py-section-padding-lg bg-white overflow-hidden" id="services">
-        <div className="max-w-container-max mx-auto px-gutter space-y-16">
-          <div className="text-center mb-16">
-            <h2 className="font-headline-lg text-headline-lg text-primary mb-4">
-              Our Core Competencies
-            </h2>
-            <div className="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+              ) : null
+            )}
           </div>
+        </section>
 
-          {[
-            {
-              icon: "security",
-              title: "Security Guards (Unarmed)",
-              desc: "Punctual, disciplined, and alert guards for residential, commercial, and retail establishments. Trained in conflict resolution, gate logs, and high-standard professional etiquette.",
-              isFlipped: false,
-            },
-            {
-              icon: "history",
-              title: "Armed Gunmen",
-              desc: "Elite personnel with valid arms licenses, specifically deployed for high-risk assets, bank vault guards, cash-in-transit, and VIP protection details.",
-              isFlipped: true,
-            },
-            {
-              icon: "sports_kabaddi",
-              title: "Personal Bodyguards & Bouncers",
-              desc: "Professional bouncers for corporate events and personal bodyguards with expert situational awareness, defensive driving skills, and rapid risk mediation capabilities.",
-              isFlipped: false,
-            },
-            {
-              icon: "cleaning_services",
-              title: "Facility Management & Housekeeping",
-              desc: "End-to-end cleaning and facility maintenance for corporate offices, commercial malls, and high-rises using eco-friendly materials and mechanized equipment.",
-              isFlipped: true,
-            },
-            {
-              icon: "engineering",
-              title: "Skilled & Unskilled Labour Staff",
-              desc: "Flexible manpower solutions for warehouse operations, logistics hubs, packaging lines, and corporate back-office administrative management.",
-              isFlipped: false,
-            },
-          ].map((serv, index) => (
-            <div
-              key={index}
-              className={`flex flex-col lg:flex-row items-center gap-12 group border-b border-outline-variant/40 pb-12 last:border-none last:pb-0 ${serv.isFlipped ? "lg:flex-row-reverse" : ""
-                }`}
-            >
-              <div className="lg:w-1/3 flex justify-center">
-                <div className="w-32 h-32 rounded-3xl bg-surface-container-high flex items-center justify-center group-hover:bg-primary transition-all duration-500 shadow-md">
-                  <span className="material-symbols-outlined text-5xl text-primary group-hover:text-white transition-colors duration-500">
-                    {serv.icon}
-                  </span>
-                </div>
-              </div>
-              <div className="lg:w-2/3 space-y-4">
-                <h3 className="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors duration-300">
-                  {serv.title}
-                </h3>
-                <p className="text-body-lg text-on-surface-variant leading-relaxed">
-                  {serv.desc}
-                </p>
-              </div>
+        {/* ─── SERVICES ─── */}
+        <section className="py-24 bg-white" id="services">
+          <div
+            ref={servicesReveal.ref}
+            className={`max-w-6xl mx-auto px-6 md:px-12 reveal ${servicesReveal.visible ? "visible" : ""}`}
+          >
+            <div className="mb-16">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#ba1a1a] mb-3">What We Do</p>
+              <h2 className="font-extrabold text-[#0a0c18]" style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)" }}>
+                Core Competencies
+              </h2>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Stats Bar */}
-      <section className="py-20 bg-primary relative overflow-hidden">
-        <div className="max-w-container-max mx-auto px-gutter relative z-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center text-on-primary">
-            <div>
-              <div className="font-display-lg text-display-lg-mobile md:text-display-lg mb-2">
-                {stats.guards}+
-              </div>
-              <p className="text-label-md font-label-md uppercase tracking-widest text-primary-fixed">
-                Active Guards
-              </p>
-            </div>
-            <div>
-              <div className="font-display-lg text-display-lg-mobile md:text-display-lg mb-2">
-                {stats.cities}+
-              </div>
-              <p className="text-label-md font-label-md uppercase tracking-widest text-primary-fixed">
-                Operational Cities
-              </p>
-            </div>
-            <div>
-              <div className="font-display-lg text-display-lg-mobile md:text-display-lg mb-2">
-                {stats.experience}+
-              </div>
-              <p className="text-label-md font-label-md uppercase tracking-widest text-primary-fixed">
-                Years Experience
-              </p>
-            </div>
-            <div>
-              <div className="font-display-lg text-display-lg-mobile md:text-display-lg mb-2">
-                100%
-              </div>
-              <p className="text-label-md font-label-md uppercase tracking-widest text-primary-fixed">
-                PSARA Compliant
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* The Noble Advantage */}
-      <section className="py-section-padding-lg bg-white">
-        <div className="max-w-container-max mx-auto px-gutter">
-          <h2 className="font-headline-lg text-headline-lg text-primary text-center mb-16">
-            The Noble Advantage
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              {
-                icon: "verified_user",
-                title: "Background Verified",
-                desc: "Rigorous 3-step verification including police verification for every recruit before deployment.",
-              },
-              {
-                icon: "model_training",
-                title: "Specialized Training",
-                desc: "Monthly refresher training sessions covering fire safety, evacuations, first aid, and soft skills.",
-              },
-              {
-                icon: "support_agent",
-                title: "24/7 Field Support",
-                desc: "Active patrol officers checking guards on rotation to ensure alert, punctual attendance.",
-              },
-              {
-                icon: "assignment_turned_in",
-                title: "Statutory Compliance",
-                desc: "Strict adherence to ESIC, EPF, GST, and local labour standards of Maharashtra.",
-              },
-            ].map((adv, index) => (
-              <div
-                key={index}
-                className="p-8 border border-outline-variant rounded-2xl hover:border-primary hover:shadow-md transition-all duration-300"
-              >
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
-                  <span className="material-symbols-outlined text-primary text-3xl">
-                    {adv.icon}
-                  </span>
+              { icon: "security", title: "Security Guards (Unarmed)", desc: "Punctual, disciplined, and alert guards for residential, commercial, and retail establishments. Trained in conflict resolution, gate logs, and professional etiquette." },
+              { icon: "history", title: "Armed Gunmen", desc: "Elite personnel with valid arms licenses, specifically deployed for high-risk assets, bank vault guards, cash-in-transit, and VIP protection details." },
+              { icon: "sports_kabaddi", title: "Personal Bodyguards & Bouncers", desc: "Professional bouncers for corporate events and personal bodyguards with expert situational awareness, defensive driving, and rapid risk mediation." },
+              { icon: "cleaning_services", title: "Facility Management & Housekeeping", desc: "End-to-end cleaning and facility maintenance for corporate offices, commercial malls, and high-rises using eco-friendly materials and mechanized equipment." },
+              { icon: "engineering", title: "Skilled & Unskilled Labour Staff", desc: "Flexible manpower solutions for warehouse operations, logistics hubs, packaging lines, and corporate back-office administrative management." },
+            ].map((s, i) => (
+              <div key={i} className="service-strip">
+                <div className={`flex flex-col md:flex-row items-start md:items-center gap-8 group ${i % 2 !== 0 ? "md:flex-row-reverse" : ""}`}>
+                  <div className="shrink-0 w-14 h-14 rounded-2xl bg-[#f0f4ff] flex items-center justify-center group-hover:bg-primary transition-colors duration-400">
+                    <span className="material-symbols-outlined text-primary group-hover:text-white text-2xl transition-colors duration-400">{s.icon}</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-[#0a0c18] text-lg mb-2 group-hover:text-primary transition-colors">{s.title}</h3>
+                    <p className="text-[#666] leading-relaxed text-[0.95rem] max-w-2xl">{s.desc}</p>
+                  </div>
+                  <div className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="material-symbols-outlined text-primary">arrow_forward</span>
+                  </div>
                 </div>
-                <h4 className="font-bold text-lg mb-4 text-on-surface">{adv.title}</h4>
-                <p className="text-on-surface-variant text-sm leading-relaxed">{adv.desc}</p>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Testimonials */}
-      <section className="py-section-padding-lg bg-surface-container-low">
-        <div className="max-w-container-max mx-auto px-gutter">
-          <div className="flex justify-between items-end mb-12">
-            <div>
-              <h2 className="font-headline-lg text-headline-lg text-primary mb-2">
+        {/* ─── STATS ─── */}
+        <section className="py-24 bg-[#0a0c18]" ref={statsRef}>
+          <div className="max-w-6xl mx-auto px-6 md:px-12">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-white text-center">
+              {[
+                { num: `${stats.guards}+`, label: "Active Guards" },
+                { num: `${stats.cities}+`, label: "Operational Cities" },
+                { num: `${stats.experience}+`, label: "Years Experience" },
+                { num: "100%", label: "PSARA Compliant" },
+              ].map((st, i) => (
+                <div key={i} className="py-4">
+                  <div className="stat-num text-white mb-2">{st.num}</div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/40">{st.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ─── ADVANTAGE ─── */}
+        <section className="py-24 bg-white">
+          <div
+            ref={advantageReveal.ref}
+            className={`max-w-6xl mx-auto px-6 md:px-12 reveal ${advantageReveal.visible ? "visible" : ""}`}
+          >
+            <div className="text-center mb-16">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#ba1a1a] mb-3">Why Choose Us</p>
+              <h2 className="font-extrabold text-[#0a0c18]" style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)" }}>The Noble Advantage</h2>
+            </div>
+            <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger ${advantageReveal.visible ? "visible" : ""}`}>
+              {[
+                { icon: "verified_user", title: "Background Verified", desc: "Rigorous 3-step verification including police clearance for every recruit before deployment." },
+                { icon: "model_training", title: "Specialized Training", desc: "Monthly refresher sessions covering fire safety, evacuations, first aid, and professional conduct." },
+                { icon: "support_agent", title: "24/7 Field Support", desc: "Active patrol officers on rotation to ensure punctual, alert coverage at every post." },
+                { icon: "assignment_turned_in", title: "Statutory Compliance", desc: "Strict adherence to ESIC, EPF, GST, and local Maharashtra labour standards." },
+              ].map((a, i) => (
+                <div key={i} className="advantage-card">
+                  <div className="w-12 h-12 bg-[#f0f4ff] rounded-xl flex items-center justify-center mb-5">
+                    <span className="material-symbols-outlined text-primary text-2xl">{a.icon}</span>
+                  </div>
+                  <h4 className="font-bold text-[#0a0c18] text-[0.95rem] mb-3">{a.title}</h4>
+                  <p className="text-[#777] text-sm leading-relaxed">{a.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ─── TESTIMONIALS ─── */}
+        <section className="py-24 bg-[#f7f8fb]">
+          <div
+            ref={testimonialsReveal.ref}
+            className={`max-w-6xl mx-auto px-6 md:px-12 reveal ${testimonialsReveal.visible ? "visible" : ""}`}
+          >
+            <div className="mb-12">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#ba1a1a] mb-3">Client Voices</p>
+              <h2 className="font-extrabold text-[#0a0c18]" style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)" }}>
                 What Our Clients Say
               </h2>
-              <p className="text-on-surface-variant">
-                Trusted by industrial complexes and corporate hubs.
-              </p>
             </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                quote:
-                  "Noble Security has been managing our warehouse logistics for over 3 years. Their guards are exceptionally well-trained and their response to emergency situations is commendable.",
-                author: "Rajesh Mehta",
-                role: "VP Ops, Global Logistics",
-              },
-              {
-                quote:
-                  "Highly professional housekeeping and security services. The staff is courteous and the management is always available for feedback and immediate action.",
-                author: "Sanya Verma",
-                role: "Admin Head, TechPark Inc.",
-              },
-              {
-                quote:
-                  "Their armed gunmen provide us the peace of mind needed for our cash-in-transit operations. Reliable, disciplined, and strictly professional.",
-                author: "Anil Kulkarni",
-                role: "Manager, Allied Bank",
-              },
-            ].map((t, index) => (
-              <div
-                key={index}
-                className="bg-white p-10 rounded-3xl soft-blue-shadow relative border border-outline-variant/40"
-              >
-                <span className="material-symbols-outlined text-primary-fixed-dim text-6xl absolute top-6 right-6 opacity-20">
-                  format_quote
-                </span>
-                <div className="flex items-center gap-1 mb-6">
-                  {[...Array(5)].map((_, idx) => (
-                    <span
-                      key={idx}
-                      className="material-symbols-outlined text-yellow-500 text-lg"
-                      style={{ fontVariationSettings: "'FILL' 1" }}
-                    >
-                      star
-                    </span>
-                  ))}
-                </div>
-                <p className="text-on-surface-variant font-body-md mb-8 italic leading-relaxed">
-                  "{t.quote}"
-                </p>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-primary font-bold shadow-inner">
-                    {t.author.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="font-bold text-on-surface">{t.author}</p>
-                    <p className="text-label-sm text-on-surface-variant">{t.role}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Enquiry Form & Contact details */}
-      <section className="py-section-padding-lg bg-white" id="enquiry">
-        <div className="max-w-container-max mx-auto px-gutter grid grid-cols-1 lg:grid-cols-2 gap-16">
-          <div className="space-y-8">
-            <h2 className="font-headline-lg text-headline-lg text-primary">
-              Let's Secure Your World
-            </h2>
-            <p className="text-body-lg text-on-surface-variant leading-relaxed">
-              Whether you need a single armed guard or an enterprise-wide integrated security and housekeeping overhaul, our operations staff is ready to assist you.
-            </p>
-            <div className="space-y-6">
+            <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 stagger ${testimonialsReveal.visible ? "visible" : ""}`}>
               {[
-                { icon: "call", title: "Call Us Directly", info: "+91 94224 07555" },
-                { icon: "mail", title: "Email Inquiries", info: "info@noblesecurity.co.in" },
-                {
-                  icon: "location_on",
-                  title: "Head Office",
-                  info: "Plot No. 15, Sector 4, Market Yard, Sangli, Maharashtra",
-                },
-              ].map((c, i) => (
-                <div
-                  key={i}
-                  className="flex gap-6 p-6 rounded-2xl bg-surface-container-low soft-blue-shadow-hover transition-all border border-outline-variant/50"
-                >
-                  <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center shrink-0 shadow-md">
-                    <span className="material-symbols-outlined text-white">{c.icon}</span>
+                { quote: "Noble Security has been managing our warehouse logistics for over 3 years. Their guards are exceptionally well-trained and their response to emergencies is commendable.", author: "Rajesh Mehta", role: "VP Ops, Global Logistics" },
+                { quote: "Highly professional housekeeping and security services. Staff is courteous and management is always available for immediate action on feedback.", author: "Sanya Verma", role: "Admin Head, TechPark Inc." },
+                { quote: "Their armed gunmen provide peace of mind for our cash-in-transit operations. Reliable, disciplined, and strictly professional at every engagement.", author: "Anil Kulkarni", role: "Manager, Allied Bank" },
+              ].map((t, i) => (
+                <div key={i} className="testimonial-card">
+                  <div className="flex items-center gap-0.5 mb-5">
+                    {[...Array(5)].map((_, k) => (
+                      <span key={k} className="material-symbols-outlined text-amber-400 text-base" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                    ))}
                   </div>
-                  <div>
-                    <h4 className="font-bold text-on-surface">{c.title}</h4>
-                    <p className="text-on-surface-variant font-body-md mt-1">{c.info}</p>
+                  <p className="text-[#444] text-[0.92rem] leading-[1.8] mb-8 italic">"{t.quote}"</p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-[#f0f4ff] flex items-center justify-center text-primary font-bold text-sm shrink-0">
+                      {t.author.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="font-bold text-[#0a0c18] text-sm">{t.author}</p>
+                      <p className="text-[#999] text-xs mt-0.5">{t.role}</p>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+        </section>
 
+        {/* ─── CONTACT ─── */}
+        <section className="py-24 bg-white" id="enquiry">
           <div
-            className="bg-white p-8 md:p-10 rounded-3xl shadow-2xl border border-outline-variant"
-            id="quote"
+            ref={contactReveal.ref}
+            className={`max-w-6xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start`}
           >
-            <h3 className="font-headline-md text-headline-md text-on-surface mb-6 font-bold">
-              Request a Free Quote
-            </h3>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-label-sm font-label-sm text-on-surface-variant ml-1">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full px-6 py-4 rounded-xl border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all bg-surface-container-low"
-                    placeholder="John Doe"
+            <div className={`reveal-left ${contactReveal.visible ? "visible" : ""}`}>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#ba1a1a] mb-3">Get in Touch</p>
+              <h2 className="font-extrabold text-[#0a0c18] mb-4" style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)" }}>
+                Let's Secure<br />Your World
+              </h2>
+              <p className="text-[#666] leading-relaxed mb-10 max-w-md">
+                Whether you need a single armed guard or an enterprise-wide integrated security solution, our operations team is ready to assist.
+              </p>
+              <div className="space-y-4">
+                {[
+                  { icon: "call", label: "Call Us Directly", value: "+91 94224 07555" },
+                  { icon: "mail", label: "Email Inquiries", value: "info@noblesecurity.co.in" },
+                  { icon: "location_on", label: "Head Office", value: "Plot No. 15, Sector 4, Market Yard, Sangli, Maharashtra" },
+                ].map((c, i) => (
+                  <div key={i} className="flex gap-4 items-start p-5 rounded-xl border border-[#eee] hover:border-primary hover:shadow-sm transition-all">
+                    <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center shrink-0">
+                      <span className="material-symbols-outlined text-white" style={{ fontSize: "18px" }}>{c.icon}</span>
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-[#999] mb-0.5">{c.label}</p>
+                      <p className="text-[#222] text-sm font-medium">{c.value}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className={`reveal-right ${contactReveal.visible ? "visible" : ""}`} style={{ transitionDelay: "120ms" }}>
+              <div className="border border-[#eee] rounded-2xl p-8 md:p-10 shadow-sm">
+                <h3 className="font-bold text-[#0a0c18] text-xl mb-6">Request a Free Quote</h3>
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                      <label className="text-xs font-semibold text-[#999] uppercase tracking-wide block mb-1.5">Full Name</label>
+                      <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="John Doe" required disabled={isSubmitted} className="noble-input" />
+                    </div>
+                    <div>
+                      <label className="text-xs font-semibold text-[#999] uppercase tracking-wide block mb-1.5">Phone Number</label>
+                      <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="+91 00000 00000" required disabled={isSubmitted} className="noble-input" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold text-[#999] uppercase tracking-wide block mb-1.5">Service Type</label>
+                    <select name="serviceType" value={formData.serviceType} onChange={handleInputChange} disabled={isSubmitted} className="noble-input">
+                      <option value="Security Guards">Security Guards (Unarmed)</option>
+                      <option value="Armed Guard">Armed Gunmen</option>
+                      <option value="Facility Management">Facility Management & Housekeeping</option>
+                      <option value="Bouncers/VIP Protection">Bouncers / VIP Protection</option>
+                      <option value="Labour Supply">Labour Staff Supply</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold text-[#999] uppercase tracking-wide block mb-1.5">Message / Requirements</label>
+                    <textarea name="message" value={formData.message} onChange={handleInputChange} placeholder="Describe your security requirements..." rows={4} disabled={isSubmitted} className="noble-input resize-none" />
+                  </div>
+                  <button
+                    type="submit"
                     disabled={isSubmitted}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-label-sm font-label-sm text-on-surface-variant ml-1">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="w-full px-6 py-4 rounded-xl border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all bg-surface-container-low"
-                    placeholder="+91 00000 00000"
-                    disabled={isSubmitted}
-                    required
-                  />
-                </div>
+                    className="w-full bg-[#ba1a1a] text-white py-4 rounded-full font-bold tracking-wide hover:bg-[#9e1515] transition-colors flex items-center justify-center gap-2 shadow-sm"
+                  >
+                    {isSubmitted ? (
+                      <><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />Sending…</>
+                    ) : "Send Enquiry"}
+                  </button>
+                </form>
               </div>
-              <div className="space-y-2">
-                <label className="text-label-sm font-label-sm text-on-surface-variant ml-1">
-                  Service Type
-                </label>
-                <select
-                  name="serviceType"
-                  value={formData.serviceType}
-                  onChange={handleInputChange}
-                  className="w-full px-6 py-4 rounded-xl border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all bg-surface-container-low"
-                  disabled={isSubmitted}
-                >
-                  <option value="Security Guards">Security Guards (Unarmed)</option>
-                  <option value="Armed Guard">Armed Gunmen</option>
-                  <option value="Facility Management">Facility Management & Housekeeping</option>
-                  <option value="Bouncers/VIP Protection">Bouncers/VIP Protection</option>
-                  <option value="Labour Supply">Labour Staff Supply</option>
-                </select>
-              </div>
-              <div className="space-y-2">
-                <label className="text-label-sm font-label-sm text-on-surface-variant ml-1">
-                  Message / Requirements
-                </label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  className="w-full px-6 py-4 rounded-xl border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all bg-surface-container-low"
-                  placeholder="Describe your security requirements..."
-                  rows={4}
-                  disabled={isSubmitted}
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                disabled={isSubmitted}
-                className="w-full bg-[#ba1a1a] text-white py-5 rounded-full font-bold text-lg hover:bg-opacity-90 transition-all shadow-lg hover:shadow-xl active:scale-95 cursor-pointer flex justify-center items-center gap-2"
-              >
-                {isSubmitted ? (
-                  <>
-                    <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></span>
-                    Sending...
-                  </>
-                ) : (
-                  "Send Enquiry"
-                )}
-              </button>
-            </form>
+            </div>
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
+    </>
   );
 };
