@@ -125,11 +125,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
             </li>
             <li className="flex gap-3 items-center">
               <span className="material-symbols-outlined text-primary-fixed shrink-0">call</span>
-              <span>+91 94224 07555</span>
-            </li>
-            <li className="mt-6 pt-6 border-t border-white/10">
-              <p className="text-label-sm text-primary-fixed font-bold">GSTIN: 27AHTPN6678H2ZE</p>
-              <p className="text-xs text-secondary-fixed-dim/60 mt-1">PSARA License: #27AHTPN</p>
+              <span>+91 9823245552</span>
             </li>
           </ul>
         </div>

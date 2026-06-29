@@ -75,7 +75,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({ setCurrentPage }) =>
         "Administrative & Back-office Support Staff",
         "Statutory Compliance & Payroll Management",
       ],
-      img: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=800",
+      img: "/sklb.jpg",
       icon: "engineering",
     },
   ];

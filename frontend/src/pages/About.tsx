@@ -1,6 +1,35 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 export const About: React.FC = () => {
+  // Hook for intersection observer scroll reveals
+  const useReveal = (threshold = 0.1) => {
+    const ref = useRef<HTMLDivElement>(null);
+    const [visible, setVisible] = useState(false);
+    useEffect(() => {
+      const el = ref.current;
+      if (!el) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+        { threshold }
+      );
+      observer.observe(el);
+      return () => observer.disconnect();
+    }, [threshold]);
+    return { ref, visible };
+  };
+
+  const certsReveal = useReveal();
+  const [activeCert, setActiveCert] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setActiveCert(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
   const values = [
     { icon: "gavel", title: "Integrity", desc: "Honest, transparent, and principled in every operation and client interaction." },
     { icon: "stars", title: "Excellence", desc: "Continuous improvement, safety audits, and uncompromising standards in delivery." },
@@ -552,6 +581,161 @@ export const About: React.FC = () => {
           aspect-ratio: 4/3;
         }
         .ab-compliance-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* ── CERTIFICATIONS ── */
+        .ab-certs {
+          background: #f8f9fc;
+        }
+        .ab-certs-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 2rem;
+          margin-top: 3rem;
+        }
+        @media (min-width: 768px) {
+          .ab-certs-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+        .cert-card {
+          background: #fff;
+          border: 1px solid #E5E7EB;
+          border-radius: 12px;
+          padding: 2rem;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .cert-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .cert-card-img-wrap {
+          width: 100%;
+          height: 160px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #f9fafb;
+          border-radius: 8px;
+          padding: 1rem;
+          margin-bottom: 1.5rem;
+        }
+        .cert-card-img {
+          max-height: 100%;
+          max-width: 100%;
+          object-fit: contain;
+        }
+        .cert-card-title {
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: #0a0c18;
+          margin-bottom: 0.5rem;
+        }
+        .cert-card-issuer {
+          font-size: 0.85rem;
+          color: #4b5563;
+          margin-bottom: 0.25rem;
+        }
+        .cert-card-validity {
+          font-size: 0.8rem;
+          color: #9ca3af;
+          margin-bottom: 1.5rem;
+        }
+        .cert-card-link {
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: #ba1a1a;
+          cursor: pointer;
+          background: none;
+          border: none;
+          padding: 0;
+          text-decoration: underline;
+          transition: color 0.2s;
+          margin-top: auto;
+        }
+        .cert-card-link:hover {
+          color: #9e1515;
+        }
+
+        /* ── LIGHTBOX MODAL ── */
+        .cert-lightbox {
+          position: fixed;
+          inset: 0;
+          z-index: 9999;
+          background: rgba(10, 12, 24, 0.85);
+          backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1.5rem;
+          cursor: zoom-out;
+        }
+        .cert-lightbox-content {
+          position: relative;
+          max-width: 90vw;
+          max-height: 90vh;
+          background: #fff;
+          padding: 1rem;
+          border-radius: 12px;
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+          cursor: default;
+        }
+        .cert-lightbox-img {
+          max-width: 100%;
+          max-height: 80vh;
+          object-fit: contain;
+          border-radius: 8px;
+        }
+        .cert-lightbox-close {
+          position: absolute;
+          top: -2.5rem;
+          right: -0.5rem;
+          background: none;
+          border: none;
+          color: #fff;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: transform 0.2s;
+        }
+        @media (max-width: 768px) {
+          .cert-lightbox-close {
+            top: 1rem;
+            right: 1rem;
+            background: rgba(10, 12, 24, 0.5);
+            padding: 4px;
+            border-radius: 50%;
+            backdrop-filter: blur(4px);
+          }
+        }
+        .cert-lightbox-close:hover {
+          transform: scale(1.1);
+        }
+
+        /* ── SCROLL REVEALS (ABOUT) ── */
+        .ab-reveal {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .ab-reveal.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .ab-stagger > * {
+          opacity: 0;
+          transform: translateY(25px);
+          transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .ab-stagger.visible > *:nth-child(1) { opacity:1; transform:translateY(0); transition-delay: 0.1s; }
+        .ab-stagger.visible > *:nth-child(2) { opacity:1; transform:translateY(0); transition-delay: 0.2s; }
+        .ab-stagger.visible > *:nth-child(3) { opacity:1; transform:translateY(0); transition-delay: 0.3s; }
+        .ab-stagger.visible > *:nth-child(4) { opacity:1; transform:translateY(0); transition-delay: 0.4s; }
       `}</style>
 
       <div className="ab-page">
@@ -663,6 +847,42 @@ export const About: React.FC = () => {
           </div>
         </section>
 
+        {/* ── CERTIFICATIONS (PLACEMENT 2) ── */}
+        <section className="ab-section ab-certs">
+          <div className="ab-inner">
+            <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+              <p className="ab-values-eyebrow">Credentials</p>
+              <h2 className="ab-heading">Our Certifications</h2>
+              <p className="ab-training-sub" style={{ margin: "1rem auto 0", maxWidth: "600px" }}>
+                We are fully certified and compliant with the highest industry standards, giving you complete peace of mind.
+              </p>
+            </div>
+            <div
+              ref={certsReveal.ref}
+              className={`ab-certs-grid ab-stagger ${certsReveal.visible ? "visible" : ""}`}
+            >
+              {[
+                { title: "Trade Mark Annexure", issuer: "Intellectual Property India, Government of India", img: "/c1.jpeg" },
+                { title: "Trade Mark Registration", issuer: "Trade Marks Registry, Government of India", img: "/c2.jpeg" },
+                { title: "ISO 9001:2015 Certification", issuer: "International Quality Certification Services UK Ltd", img: "/ce3.png" },
+                { title: "PSARA Security License", issuer: "Controlling Authority, Government of Maharashtra", img: "/ce4.png" },
+              ].map((c, i) => (
+                <div key={i} className="cert-card">
+                  <div className="cert-card-img-wrap">
+                    <img src={c.img} alt={c.title} className="cert-card-img" />
+                  </div>
+                  <h3 className="cert-card-title">Certification Name</h3>
+                  <p style={{ fontSize: "0.85rem", fontWeight: "600", color: "#666", marginBottom: "0.5rem" }}>{c.title}</p>
+                  <p className="cert-card-issuer">Issued by: {c.issuer}</p>
+                  <button className="cert-card-link" onClick={() => setActiveCert(c.img)}>
+                    View Certificate
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ── LEADERSHIP ── */}
         <section className="ab-section ab-leadership">
           <div className="ab-inner">
@@ -736,6 +956,20 @@ export const About: React.FC = () => {
         </section>
 
       </div>
+
+      {activeCert && (
+        <div
+          className="cert-lightbox"
+          onClick={() => setActiveCert(null)}
+        >
+          <div className="cert-lightbox-content" onClick={(e) => e.stopPropagation()}>
+            <button className="cert-lightbox-close" onClick={() => setActiveCert(null)} aria-label="Close Lightbox">
+              <span className="material-symbols-outlined" style={{ fontSize: 24 }}>close</span>
+            </button>
+            <img src={activeCert} alt="Certificate" className="cert-lightbox-img" />
+          </div>
+        </div>
+      )}
     </>
   );
 };

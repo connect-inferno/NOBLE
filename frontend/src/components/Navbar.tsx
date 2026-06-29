@@ -75,16 +75,15 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, setCurrentPage }) =
         }
         /* Drop your logo image here — replace placeholder div with:
            <img src="/logo.png" alt="Noble Security" style="height:40px;width:auto;" />  */
-        .nb-logo-placeholder {
-          width: 38px; height: 38px;
+        .nb-logo-img {
+          width: 60px; height: 60px;
           border-radius: 8px;
-          background: #f0f4ff;
           border: 1.5px solid #dde3f5;
-          display: flex; align-items: center; justify-content: center;
+          object-fit: cover;
           flex-shrink: 0;
           transition: transform 0.2s;
         }
-        .nb-logo:hover .nb-logo-placeholder { transform: scale(1.05); }
+        .nb-logo:hover .nb-logo-img { transform: scale(1.05); }
         .nb-logo-text { display: flex; flex-direction: column; line-height: 1.15; }
         .nb-logo-name {
           font-size: 0.92rem;
@@ -268,14 +267,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, setCurrentPage }) =
 
           {/* LOGO — replace .nb-logo-placeholder with your <img> tag */}
           <button className="nb-logo" onClick={() => handleNavClick("home")} aria-label="Home">
-            <div className="nb-logo-placeholder">
-              <span
-                className="material-symbols-outlined"
-                style={{ fontSize: 19, color: "#0056b3", fontVariationSettings: "'FILL' 1" }}
-              >
-                shield
-              </span>
-            </div>
+            <img src="/logo.jpeg" alt="Noble Security" className="nb-logo-img" />
             <div className="nb-logo-text">
               <span className="nb-logo-name">Noble Security</span>
               <span className="nb-logo-sub">& Services</span>
@@ -322,7 +314,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, setCurrentPage }) =
         <div className="drawer-panel">
           <div className="drawer-head">
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <span className="material-symbols-outlined" style={{ fontSize: 17, color: "#0056b3", fontVariationSettings: "'FILL' 1" }}>shield</span>
+              <img
+                src="/logo.jpeg"
+                alt="Noble Security"
+                style={{ width: "36px", height: "36px", borderRadius: "6px", objectFit: "cover" }}
+              />
               <span style={{ fontWeight: 800, fontSize: "0.88rem", color: "#0a0c18" }}>Noble Security</span>
             </div>
             <button className="drawer-close" onClick={() => setIsMobileMenuOpen(false)}>

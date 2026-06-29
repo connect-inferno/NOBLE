@@ -442,7 +442,7 @@ export const Contact: React.FC = () => {
               {
                 icon: "call",
                 title: "Call / WhatsApp",
-                lines: ["Main Operations: +91 94224 07555", "WhatsApp Support: +91 233 2301555"],
+                lines: ["Main Operations: +91 9823245552", "WhatsApp Support: +91 9823245552"],
               },
               {
                 icon: "mail",
@@ -546,15 +546,15 @@ export const Contact: React.FC = () => {
             <div className="ct-hours-grid">
               <div className="ct-hours-cell">
                 <div className="ct-hours-cell-title">Sangli HQ</div>
-                <div className="ct-hours-time">09:00 – 19:00</div>
+                <div className="ct-hours-time">09:00 AM – 07:00 PM</div>
                 <div className="ct-hours-days">Monday – Saturday</div>
                 <div className="ct-hours-note">Closed Sundays &amp; National Holidays</div>
               </div>
               <div className="ct-hours-cell">
                 <div className="ct-hours-cell-title">Pune Branch</div>
-                <div className="ct-hours-time">10:00 – 18:00</div>
+                <div className="ct-hours-time">10:00 AM – 06:00 PM</div>
                 <div className="ct-hours-days">Monday – Friday</div>
-                <div className="ct-hours-note">Saturday by appointment only</div>
+                <div className="ct-hours-note" style={{ fontWeight: 600 }}>Saturday by appointment only</div>
               </div>
               <div className="ct-hours-cell highlight">
                 <div className="ct-hours-cell-title">Emergency Command</div>
