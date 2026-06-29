@@ -61,31 +61,31 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
       title: "Industrial Security",
       desc: "Securing vast manufacturing units with perimeter patrol, access control, and material movement tracking. Our guards are trained in fire safety and emergency evacuation protocols specific to industrial hazards.",
       points: ["Perimeter Patrol & Fencing Audit", "Raw Material Gate Management", "24/7 Control Room Monitoring"],
-      img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800",
+      img: "/industry.jpg",
     },
     banks: {
       title: "Banking & Finance",
       desc: "High-alert security for financial institutions requiring strict access protocols and armed presence. We specialize in ATM guarding and vault protection services.",
       points: ["Armed Guard Deployment", "ATM Monitoring", "Secure Cash Transit Support"],
-      img: "https://images.unsplash.com/photo-1621416848469-9c5181bb5269?auto=format&fit=crop&q=80&w=800",
+      img: "/bank.jpg",
     },
     schools: {
       title: "Educational Institutions",
       desc: "Child-safety oriented security for schools and universities. Our staff is trained in school-specific behavioral etiquette and emergency protocols.",
       points: ["Child-Safety Trained Staff", "Visitor Management Systems", "Emergency Drill Management"],
-      img: "https://images.unsplash.com/photo-1523050335456-c7bb74ae330d?auto=format&fit=crop&q=80&w=800",
+      img: "/school.jpg",
     },
     hospitals: {
       title: "Hospitality & Healthcare",
       desc: "24/7 vigil for medical centers focusing on crowd management and sensitive area protection.",
       points: ["Patient Wing Monitoring", "Crowd Control", "Incident Reporting"],
-      img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800",
+      img: "/hospital.jpg",
     },
     corporate: {
       title: "Corporate Parks",
       desc: "Front-office integrated security that manages corporate visitor experiences while maintaining strict entry-exit logs.",
       points: ["Digital Visitor Logging", "Valet & Parking Security", "BMS Integration"],
-      img: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800",
+      img: "/office.jpg",
     },
   };
 
@@ -121,15 +121,23 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
     e.preventDefault();
     if (!formData.name || !formData.phone) { alert("Please enter your name and phone number."); return; }
     setIsSubmitted(true);
+
+    const phoneNumber = "919823245552";
+    const text = `*New Quote Request from Website*\n\n*Name:* ${formData.name}\n*Phone:* ${formData.phone}\n*Service Type:* ${formData.serviceType}\n*Message:* ${formData.message || "None"}`;
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`;
+
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+
     setTimeout(() => {
       setFormData({ name: "", phone: "", serviceType: "Security Guards", message: "" });
       setIsSubmitted(false);
-      alert("Thank you! Your enquiry has been received. Our team will contact you shortly.");
-    }, 1500);
+      alert("Thank you! Your enquiry has been received and redirected to WhatsApp.");
+    }, 1000);
   };
 
   // Reveal hooks
   const aboutReveal = useReveal();
+  const certStripReveal = useReveal();
   const sectorsReveal = useReveal();
   const servicesReveal = useReveal();
   const advantageReveal = useReveal();
@@ -263,15 +271,69 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
 
         /* ---- Testimonial card ---- */
         .testimonial-card {
+          position: relative;
           background: #fff;
           border: 1px solid rgba(0,0,0,0.07);
           border-radius: 1.25rem;
           padding: 2.5rem;
-          transition: transform 0.3s, box-shadow 0.3s;
+          overflow: hidden;
+          transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+                      box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+                      border-color 0.4s;
+        }
+        .testimonial-card::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 4px;
+          background: linear-gradient(90deg, #ba1a1a, #ff4d4d);
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .testimonial-card::after {
+          content: '“';
+          position: absolute;
+          top: 0.5rem;
+          right: 1.5rem;
+          font-size: 6.5rem;
+          line-height: 1;
+          font-family: Georgia, serif;
+          color: rgba(186, 26, 26, 0.03);
+          pointer-events: none;
+          transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), color 0.4s;
         }
         .testimonial-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 20px 40px rgba(0,0,80,0.08);
+          transform: translateY(-8px);
+          border-color: rgba(186, 26, 26, 0.15);
+          box-shadow: 0 22px 45px rgba(186, 26, 26, 0.07), 0 1px 3px rgba(0, 0, 0, 0.01);
+        }
+        .testimonial-card:hover::before {
+          transform: scaleX(1);
+        }
+        .testimonial-card:hover::after {
+          transform: translateY(-2px) scale(1.06);
+          color: rgba(186, 26, 26, 0.08);
+        }
+        .testimonial-card .star-icon {
+          display: inline-block;
+          transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .testimonial-card:hover .star-icon:nth-child(1) { transform: scale(1.2) rotate(8deg); transition-delay: 20ms; }
+        .testimonial-card:hover .star-icon:nth-child(2) { transform: scale(1.2) rotate(-6deg); transition-delay: 50ms; }
+        .testimonial-card:hover .star-icon:nth-child(3) { transform: scale(1.2) rotate(8deg); transition-delay: 80ms; }
+        .testimonial-card:hover .star-icon:nth-child(4) { transform: scale(1.2) rotate(-6deg); transition-delay: 110ms; }
+        .testimonial-card:hover .star-icon:nth-child(5) { transform: scale(1.2) rotate(8deg); transition-delay: 140ms; }
+
+        .testimonial-card .author-avatar {
+          transition: background-color 0.35s cubic-bezier(0.25, 1, 0.5, 1), 
+                      color 0.35s cubic-bezier(0.25, 1, 0.5, 1), 
+                      transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .testimonial-card:hover .author-avatar {
+          background-color: #ba1a1a;
+          color: #fff !important;
+          transform: scale(1.06);
         }
 
         /* ---- Advantage card ---- */
@@ -318,6 +380,53 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
           width: 28px;
           border-radius: 4px;
           background: #fff;
+        }
+
+        /* ---- Certifications strip ---- */
+        .cert-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          align-items: center;
+          justify-items: center;
+        }
+        @media (min-width: 768px) {
+          .cert-grid {
+            grid-template-columns: repeat(4, 1fr);
+          }
+        }
+        .cert-grid-item {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 1.5rem;
+          width: 100%;
+          box-sizing: border-box;
+        }
+        @media (max-width: 767px) {
+          .cert-grid-item:nth-child(odd) {
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+          }
+          .cert-grid-item:nth-child(1), .cert-grid-item:nth-child(2) {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+          }
+        }
+        @media (min-width: 768px) {
+          .cert-grid-item:not(:last-child) {
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+          }
+        }
+        .cert-strip-badge {
+          max-height: 70px;
+          max-width: 140px;
+          object-fit: contain;
+          filter: grayscale(100%) brightness(0.9);
+          opacity: 0.65;
+          transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+        }
+        .cert-strip-badge:hover {
+          filter: grayscale(0%) brightness(1);
+          opacity: 1;
+          transform: scale(1.05);
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -404,6 +513,32 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
           `}</style>
         </section>
 
+        {/* ─── TRUSTED & CERTIFIED STRIP (PLACEMENT 1) ─── */}
+        <section className="py-10 bg-[#0a0c18] border-t border-white/5 relative z-20">
+          <div
+            ref={certStripReveal.ref}
+            className={`max-w-6xl mx-auto px-6 md:px-12 reveal ${certStripReveal.visible ? "visible" : ""}`}
+          >
+            <p className="text-center text-[10px] font-bold uppercase tracking-[0.2em] text-[#ba1a1a] mb-6">
+              TRUSTED & CERTIFIED
+            </p>
+            <div className="cert-grid">
+              <div className="cert-grid-item">
+                <img src="/c1.jpeg" alt="Trade Mark Annexure" className="cert-strip-badge" />
+              </div>
+              <div className="cert-grid-item">
+                <img src="/c2.jpeg" alt="Trade Mark Certificate" className="cert-strip-badge" />
+              </div>
+              <div className="cert-grid-item">
+                <img src="/ce3.png" alt="ISO 9001:2015" className="cert-strip-badge" />
+              </div>
+              <div className="cert-grid-item">
+                <img src="/ce4.png" alt="PSARA License" className="cert-strip-badge" />
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ─── ABOUT ─── */}
         <section className="py-24 bg-white" id="about">
           <div
@@ -421,17 +556,6 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
               <p className="text-[#666] leading-[1.8] mb-10 text-[0.95rem]">
                 Our commitment to compliance — PSARA, GST, EPF — and our rigorous recruitment standards ensure that every guard at your gate represents the Noble standard of integrity and excellence.
               </p>
-              <div className="flex items-center gap-4">
-                <img
-                  className="w-14 h-14 rounded-full object-cover"
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=150"
-                  alt="Col. R.S. Sharma"
-                />
-                <div>
-                  <p className="font-bold text-[#0a0c18] text-sm">Col. (Retd) R.S. Sharma</p>
-                  <p className="text-[#888] text-xs mt-0.5">Director of Operations</p>
-                </div>
-              </div>
             </div>
 
             <div className={`lg:w-[48%] grid grid-cols-2 gap-4 w-full reveal-right ${aboutReveal.visible ? "visible" : ""}`} style={{ transitionDelay: "100ms" }}>
@@ -615,12 +739,12 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
                 <div key={i} className="testimonial-card">
                   <div className="flex items-center gap-0.5 mb-5">
                     {[...Array(5)].map((_, k) => (
-                      <span key={k} className="material-symbols-outlined text-amber-400 text-base" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                      <span key={k} className="star-icon material-symbols-outlined text-amber-400 text-base" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
                     ))}
                   </div>
                   <p className="text-[#444] text-[0.92rem] leading-[1.8] mb-8 italic">"{t.quote}"</p>
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-[#f0f4ff] flex items-center justify-center text-primary font-bold text-sm shrink-0">
+                    <div className="author-avatar w-10 h-10 rounded-full bg-[#f0f4ff] flex items-center justify-center text-primary font-bold text-sm shrink-0">
                       {t.author.charAt(0)}
                     </div>
                     <div>
@@ -650,7 +774,7 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
               </p>
               <div className="space-y-4">
                 {[
-                  { icon: "call", label: "Call Us Directly", value: "+91 94224 07555" },
+                  { icon: "call", label: "Call Us Directly", value: "+91 9823245552" },
                   { icon: "mail", label: "Email Inquiries", value: "info@noblesecurity.co.in" },
                   { icon: "location_on", label: "Head Office", value: "Plot No. 15, Sector 4, Market Yard, Sangli, Maharashtra" },
                 ].map((c, i) => (
