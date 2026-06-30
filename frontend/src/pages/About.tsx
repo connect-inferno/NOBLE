@@ -15,10 +15,10 @@ export const About: React.FC = () => {
       observer.observe(el);
       return () => observer.disconnect();
     }, [threshold]);
-    return { ref, visible };
+    return [ref, visible] as const;
   };
 
-  const certsReveal = useReveal();
+  const [certsRef, certsVisible] = useReveal();
   const [activeCert, setActiveCert] = useState<string | null>(null);
 
   useEffect(() => {
@@ -858,8 +858,8 @@ export const About: React.FC = () => {
               </p>
             </div>
             <div
-              ref={certsReveal.ref}
-              className={`ab-certs-grid ab-stagger ${certsReveal.visible ? "visible" : ""}`}
+              ref={certsRef}
+              className={`ab-certs-grid ab-stagger ${certsVisible ? "visible" : ""}`}
             >
               {[
                 { title: "Trade Mark Annexure", issuer: "Intellectual Property India, Government of India", img: "/c1.jpeg" },
