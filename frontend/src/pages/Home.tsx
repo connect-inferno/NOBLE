@@ -18,7 +18,7 @@ function useReveal(threshold = 0.15) {
     observer.observe(el);
     return () => observer.disconnect();
   }, [threshold]);
-  return { ref, visible };
+  return [ref, visible] as const;
 }
 
 export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
@@ -136,13 +136,13 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
   };
 
   // Reveal hooks
-  const aboutReveal = useReveal();
-  const certStripReveal = useReveal();
-  const sectorsReveal = useReveal();
-  const servicesReveal = useReveal();
-  const advantageReveal = useReveal();
-  const testimonialsReveal = useReveal();
-  const contactReveal = useReveal();
+  const [aboutRef, aboutVisible] = useReveal();
+  const [certStripRef, certStripVisible] = useReveal();
+  const [sectorsRef, sectorsVisible] = useReveal();
+  const [servicesRef, servicesVisible] = useReveal();
+  const [advantageRef, advantageVisible] = useReveal();
+  const [testimonialsRef, testimonialsVisible] = useReveal();
+  const [contactRef, contactVisible] = useReveal();
 
   return (
     <>
@@ -516,8 +516,8 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
         {/* ─── TRUSTED & CERTIFIED STRIP (PLACEMENT 1) ─── */}
         <section className="py-10 bg-[#0a0c18] border-t border-white/5 relative z-20">
           <div
-            ref={certStripReveal.ref}
-            className={`max-w-6xl mx-auto px-6 md:px-12 reveal ${certStripReveal.visible ? "visible" : ""}`}
+            ref={certStripRef}
+            className={`max-w-6xl mx-auto px-6 md:px-12 reveal ${certStripVisible ? "visible" : ""}`}
           >
             <p className="text-center text-[10px] font-bold uppercase tracking-[0.2em] text-[#ba1a1a] mb-6">
               TRUSTED & CERTIFIED
@@ -542,10 +542,10 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
         {/* ─── ABOUT ─── */}
         <section className="py-24 bg-white" id="about">
           <div
-            ref={aboutReveal.ref}
+            ref={aboutRef}
             className="max-w-6xl mx-auto px-6 md:px-12 flex flex-col lg:flex-row gap-16 items-start"
           >
-            <div className={`lg:w-[52%] reveal-left ${aboutReveal.visible ? "visible" : ""}`}>
+            <div className={`lg:w-[52%] reveal-left ${aboutVisible ? "visible" : ""}`}>
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#ba1a1a] mb-4">About Noble</p>
               <h2 className="font-extrabold text-[#0a0c18] leading-tight mb-6" style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.75rem)" }}>
                 A Legacy of Trust<br />and Vigilance
@@ -558,7 +558,7 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
               </p>
             </div>
 
-            <div className={`lg:w-[48%] grid grid-cols-2 gap-4 w-full reveal-right ${aboutReveal.visible ? "visible" : ""}`} style={{ transitionDelay: "100ms" }}>
+            <div className={`lg:w-[48%] grid grid-cols-2 gap-4 w-full reveal-right ${aboutVisible ? "visible" : ""}`} style={{ transitionDelay: "100ms" }}>
               {[
                 { icon: "timeline", label: "Our Journey", value: "9+ Years" },
                 { icon: "military_tech", label: "Recognition", value: "Top Firm 2023" },
@@ -580,8 +580,8 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
         {/* ─── SECTORS ─── */}
         <section className="py-24 bg-[#f7f8fb]">
           <div
-            ref={sectorsReveal.ref}
-            className={`max-w-6xl mx-auto px-6 md:px-12 reveal ${sectorsReveal.visible ? "visible" : ""}`}
+            ref={sectorsRef}
+            className={`max-w-6xl mx-auto px-6 md:px-12 reveal ${sectorsVisible ? "visible" : ""}`}
           >
             <div className="mb-12">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#ba1a1a] mb-3">Expertise</p>
@@ -636,8 +636,8 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
         {/* ─── SERVICES ─── */}
         <section className="py-24 bg-white" id="services">
           <div
-            ref={servicesReveal.ref}
-            className={`max-w-6xl mx-auto px-6 md:px-12 reveal ${servicesReveal.visible ? "visible" : ""}`}
+            ref={servicesRef}
+            className={`max-w-6xl mx-auto px-6 md:px-12 reveal ${servicesVisible ? "visible" : ""}`}
           >
             <div className="mb-16">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#ba1a1a] mb-3">What We Do</p>
@@ -692,14 +692,14 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
         {/* ─── ADVANTAGE ─── */}
         <section className="py-24 bg-white">
           <div
-            ref={advantageReveal.ref}
-            className={`max-w-6xl mx-auto px-6 md:px-12 reveal ${advantageReveal.visible ? "visible" : ""}`}
+            ref={advantageRef}
+            className={`max-w-6xl mx-auto px-6 md:px-12 reveal ${advantageVisible ? "visible" : ""}`}
           >
             <div className="text-center mb-16">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#ba1a1a] mb-3">Why Choose Us</p>
               <h2 className="font-extrabold text-[#0a0c18]" style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)" }}>The Noble Advantage</h2>
             </div>
-            <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger ${advantageReveal.visible ? "visible" : ""}`}>
+            <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 stagger ${advantageVisible ? "visible" : ""}`}>
               {[
                 { icon: "verified_user", title: "Background Verified", desc: "Rigorous 3-step verification including police clearance for every recruit before deployment." },
                 { icon: "model_training", title: "Specialized Training", desc: "Monthly refresher sessions covering fire safety, evacuations, first aid, and professional conduct." },
@@ -721,8 +721,8 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
         {/* ─── TESTIMONIALS ─── */}
         <section className="py-24 bg-[#f7f8fb]">
           <div
-            ref={testimonialsReveal.ref}
-            className={`max-w-6xl mx-auto px-6 md:px-12 reveal ${testimonialsReveal.visible ? "visible" : ""}`}
+            ref={testimonialsRef}
+            className={`max-w-6xl mx-auto px-6 md:px-12 reveal ${testimonialsVisible ? "visible" : ""}`}
           >
             <div className="mb-12">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#ba1a1a] mb-3">Client Voices</p>
@@ -730,7 +730,7 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
                 What Our Clients Say
               </h2>
             </div>
-            <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 stagger ${testimonialsReveal.visible ? "visible" : ""}`}>
+            <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 stagger ${testimonialsVisible ? "visible" : ""}`}>
               {[
                 { quote: "Noble Security has been managing our warehouse logistics for over 3 years. Their guards are exceptionally well-trained and their response to emergencies is commendable.", author: "Rajesh Mehta", role: "VP Ops, Global Logistics" },
                 { quote: "Highly professional housekeeping and security services. Staff is courteous and management is always available for immediate action on feedback.", author: "Sanya Verma", role: "Admin Head, TechPark Inc." },
@@ -761,10 +761,10 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
         {/* ─── CONTACT ─── */}
         <section className="py-24 bg-white" id="enquiry">
           <div
-            ref={contactReveal.ref}
+            ref={contactRef}
             className={`max-w-6xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start`}
           >
-            <div className={`reveal-left ${contactReveal.visible ? "visible" : ""}`}>
+            <div className={`reveal-left ${contactVisible ? "visible" : ""}`}>
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#ba1a1a] mb-3">Get in Touch</p>
               <h2 className="font-extrabold text-[#0a0c18] mb-4" style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)" }}>
                 Let's Secure<br />Your World
@@ -791,7 +791,7 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
               </div>
             </div>
 
-            <div className={`reveal-right ${contactReveal.visible ? "visible" : ""}`} style={{ transitionDelay: "120ms" }}>
+            <div className={`reveal-right ${contactVisible ? "visible" : ""}`} style={{ transitionDelay: "120ms" }}>
               <div className="border border-[#eee] rounded-2xl p-8 md:p-10 shadow-sm">
                 <h3 className="font-bold text-[#0a0c18] text-xl mb-6">Request a Free Quote</h3>
                 <form onSubmit={handleSubmit} className="space-y-5">

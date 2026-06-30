@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 
 interface ServicesPageProps {
   setCurrentPage: (page: string) => void;
 }
 
 export const ServicesPage: React.FC<ServicesPageProps> = ({ setCurrentPage }) => {
-  const [activeService, setActiveService] = useState<string | null>(null);
-
   const services = [
     {
       id: "guards",
