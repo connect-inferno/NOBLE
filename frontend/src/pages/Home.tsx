@@ -732,9 +732,9 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
             </div>
             <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 stagger ${testimonialsVisible ? "visible" : ""}`}>
               {[
-                { quote: "Noble Security has been managing our warehouse logistics for over 3 years. Their guards are exceptionally well-trained and their response to emergencies is commendable.", author: "Rajesh Mehta", role: "VP Ops, Global Logistics" },
-                { quote: "Highly professional housekeeping and security services. Staff is courteous and management is always available for immediate action on feedback.", author: "Sanya Verma", role: "Admin Head, TechPark Inc." },
-                { quote: "Their armed gunmen provide peace of mind for our cash-in-transit operations. Reliable, disciplined, and strictly professional at every engagement.", author: "Anil Kulkarni", role: "Manager, Allied Bank" },
+                { quote: "Noble Security has been managing our warehouse logistics for over 3 years. Their guards are exceptionally well-trained and their response to emergencies is commendable.", author: "Saurabh Gherade" },
+                { quote: "Highly professional housekeeping and security services. Staff is courteous and management is always available for immediate action on feedback.", author: "Ramchandra Dudhal" },
+                { quote: "Their armed gunmen provide peace of mind for our cash-in-transit operations. Reliable, disciplined, and strictly professional at every engagement.", author: "Amol Danole" },
               ].map((t, i) => (
                 <div key={i} className="testimonial-card">
                   <div className="flex items-center gap-0.5 mb-5">
@@ -749,7 +749,6 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
                     </div>
                     <div>
                       <p className="font-bold text-[#0a0c18] text-sm">{t.author}</p>
-                      <p className="text-[#999] text-xs mt-0.5">{t.role}</p>
                     </div>
                   </div>
                 </div>

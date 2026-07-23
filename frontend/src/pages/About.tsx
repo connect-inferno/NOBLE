@@ -30,25 +30,92 @@ export const About: React.FC = () => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+  const [activeOpsTab, setActiveOpsTab] = useState<"recruitment" | "modules" | "operations">("recruitment");
+
   const values = [
-    { icon: "gavel", title: "Integrity", desc: "Honest, transparent, and principled in every operation and client interaction." },
-    { icon: "stars", title: "Excellence", desc: "Continuous improvement, safety audits, and uncompromising standards in delivery." },
-    { icon: "shield", title: "Discipline", desc: "Strict code of conduct rooted in our military heritage and operational rigour." },
-    { icon: "handshake", title: "Community", desc: "Building safe, secure, and thriving environments for the people we serve." },
+    { icon: "verified_user", title: "Surksha Pratham Kartavya", desc: "Our core philosophy. Security is much more than mere deployment; it is about thorough training and duty." },
+    { icon: "gavel", title: "100% Legally Compliant", desc: "Licensed under PSARA Act 2005. Fully compliant with EPF, ESIC, Professional Tax, Labour Welfare Fund, and all labor laws." },
+    { icon: "devices", title: "Tech-Savvy Operations", desc: "Automated attendance with time & location punch on guard mobile apps, enabling remote monitoring 24/7." },
+    { icon: "support_agent", title: "Dedicated Customer Care", desc: "A committed Customer Care Cell that keeps in touch with clients, gathers feedback, and resolves issues within 48 hours." },
   ];
 
-  const trainingBadges = [
-    { icon: "fitness_center", label: "Physical Drills" },
-    { icon: "fire_truck", label: "Fire Safety" },
-    { icon: "videocam", label: "Surveillance Tech" },
-    { icon: "medical_services", label: "First Aid & CPR" },
-  ];
 
   const stats = [
-    { icon: "military_tech", title: "Ex-Military Led", desc: "Discipline-focused operations" },
-    { icon: "update", title: "24/7 Response", desc: "Uninterrupted safety dispatch" },
-    { icon: "groups", title: "500+ Staff", desc: "Trained security personnel" },
-    { icon: "thumb_up", title: "99% Retention", desc: "Client trust & loyalty" },
+    { icon: "event", title: "Since 2015", desc: "Securing India with excellence" },
+    { icon: "shield", title: "100% Compliant", desc: "Licensed under PSARA 2005" },
+    { icon: "map", title: "Multi-State Presence", desc: "MH, KA, and Delhi offices" },
+    { icon: "room_service", title: "3-in-1 Solutions", desc: "Security, Manpower & Housekeeping" },
+  ];
+
+  const whyChooseUs = [
+    "ISO 9001:2015 Certified Company.",
+    "Professional & Trained Security at an affordable rate, giving you value for money.",
+    "Flexible budget options by offering tailor-made quotations as per your service level expectation.",
+    "Remote monitoring of security guards through an app on their mobile.",
+    "Committed to resolving client complaints within 48 hours.",
+    "Modern outlook, vibrant, innovative, tech-savvy and trustworthy company.",
+    "No association with any labour union or political party.",
+    "Stringent measures for recruitment are implemented.",
+    "Noble Security Guards are well trained, neatly turned out in smart uniforms and strictly supervised.",
+    "Wages are paid to Security Guards on the 10th of every month through direct bank transfer.",
+    "No unwarranted deductions from the wages of the guards to ensure high morale and performance.",
+    "Total statutory compliances undertaken to safeguard your interest.",
+    "Additional Manpower is arranged at short notice.",
+    "Regular onsite training and refresher courses to adapt to day-to-day changes.",
+    "Regular interaction by our senior operations personnel at different levels with the client for feedback.",
+    "Day and night patrolling.",
+    "Immediate replacements for non-performance.",
+    "Rotation of security personnel as required by you.",
+    "Transparent and Professional approach in every aspect of our work.",
+    "Taking necessary measures to safeguard your interest at all times."
+  ];
+
+  const branches = [
+    {
+      state: "MAHARASHTRA STATE",
+      offices: [
+        {
+          name: "Registered Head Office & Training Center",
+          address: "G-3, Girnar Tower, Opp. PNG Showroom, Sangli-Miraj Road, Vishrambag, Sangli – 416415, Maharashtra",
+          phones: ["0233-3551723", "9158827123", "8484992853", "9112177123"]
+        },
+        {
+          name: "Pune Office",
+          address: "Address One, F-11, Building No. 33, Phase-II, Gahunje, Tal: Maval, Dist: Pune - 412101, Maharashtra",
+          phones: ["9765206467", "9112167123"]
+        },
+        {
+          name: "Mumbai Office",
+          address: "G-20-6, Floor- Loft, Municipal Chawl, Andhra Valley Road, Rajendra Prasad Nagar, M. L. Camp Matunga, Mumbai – 400019",
+          phones: ["9769936422", "9158827123"]
+        },
+        {
+          name: "Ratnagiri Office",
+          address: "F- 203, Building No. 13, Rahul Garden, Kaviltali, Chiplun, Tal: Chiplun, Dist: Ratnagiri – 415605",
+          phones: ["+91 8484992853", "+91 9158827123"]
+        }
+      ]
+    },
+    {
+      state: "KARNATAKA STATE",
+      offices: [
+        {
+          name: "Belagavi Office",
+          address: "No. 336, Ground Floor, Chavadi Galli, M. Vadgaon, Belgavi – 590005",
+          phones: ["9158827123", "8484992853"]
+        }
+      ]
+    },
+    {
+      state: "DELHI STATE",
+      offices: [
+        {
+          name: "Delhi Office",
+          address: "House No. 1033, Pole No. 46, Near Guggaji Park, Mundka Nangloi, West Delhi, Delhi - 110041",
+          phones: []
+        }
+      ]
+    }
   ];
 
   return (
@@ -430,60 +497,65 @@ export const About: React.FC = () => {
           max-width: 460px;
         }
         .ab-leaders-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 1.5rem;
-          max-width: 720px;
-          margin: 0 auto;
-        }
-        @media (max-width: 600px) { .ab-leaders-grid { grid-template-columns: 1fr; } }
-
-        .ab-leader-card {
           display: flex;
           flex-direction: column;
+          gap: 1.25rem;
+          max-width: 600px;
+          margin: 0 auto;
+        }
+        .ab-leader-card {
+          background: rgba(255, 255, 255, 0.02);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 12px;
+          padding: 1.25rem 2rem;
+          display: flex;
           align-items: center;
-          text-align: center;
+          justify-content: space-between;
+          transition: background 0.3s, border-color 0.3s, transform 0.3s;
         }
-        .ab-leader-img-wrap {
-          width: 100%;
-          max-width: 280px;
-          border-radius: 16px;
-          overflow: hidden;
-          aspect-ratio: 3/4;
-          position: relative;
-          margin-bottom: 1.25rem;
+        .ab-leader-card:hover {
+          background: rgba(255, 255, 255, 0.06);
+          border-color: rgba(100, 150, 255, 0.3);
+          transform: translateY(-2px);
         }
-        .ab-leader-img-wrap img {
-          width: 100%; height: 100%;
-          object-fit: cover;
-          display: block;
-          transition: transform 0.5s ease;
+        .ab-leader-initials {
+          width: 44px; height: 44px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, rgba(0, 86, 179, 0.25), rgba(100, 150, 255, 0.25));
+          border: 1px solid rgba(100, 150, 255, 0.3);
+          color: #6ba3f5;
+          font-weight: 800;
+          font-size: 0.95rem;
+          display: flex; align-items: center; justify-content: center;
+          margin-right: 1.5rem;
+          flex-shrink: 0;
+          letter-spacing: 0.05em;
+          transition: background 0.3s, color 0.3s, border-color 0.3s;
         }
-        .ab-leader-card:hover .ab-leader-img-wrap img { transform: scale(1.05); }
-        .ab-leader-img-wrap::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(to top, rgba(10,12,24,0.55) 0%, transparent 50%);
-          pointer-events: none;
-        }
-        /* blue accent top */
-        .ab-leader-img-wrap::before {
-          content: '';
-          position: absolute;
-          top: 0; left: 0;
-          width: 100%; height: 3px;
+        .ab-leader-card:hover .ab-leader-initials {
           background: #0056b3;
-          z-index: 2;
+          color: #fff;
+          border-color: #0056b3;
         }
-        .ab-leader-name { font-size: 1rem; font-weight: 800; color: #fff; }
+        .ab-leader-meta {
+          display: flex;
+          align-items: center;
+          flex-grow: 1;
+        }
+        .ab-leader-info {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          text-align: left;
+        }
+        .ab-leader-name { font-size: 1.05rem; font-weight: 800; color: #fff; }
         .ab-leader-role {
-          font-size: 0.7rem;
+          font-size: 0.72rem;
           font-weight: 700;
-          letter-spacing: 0.14em;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: rgba(100,150,255,0.7);
-          margin-top: 0.3rem;
+          color: rgba(100,150,255,0.65);
+          margin-top: 0.25rem;
         }
 
         /* ── TRAINING ── */
@@ -713,8 +785,182 @@ export const About: React.FC = () => {
             backdrop-filter: blur(4px);
           }
         }
-        .cert-lightbox-close:hover {
-          transform: scale(1.1);
+        /* ── WHY US SECTION ── */
+        .ab-whyus {
+          background: #f7f8fb;
+        }
+        .ab-whyus-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.25rem;
+          margin-top: 2.5rem;
+        }
+        @media (max-width: 768px) {
+          .ab-whyus-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+        }
+        .why-card {
+          background: #fff;
+          border: 1px solid #eaecf4;
+          border-radius: 12px;
+          padding: 1.25rem 1.5rem;
+          display: flex;
+          align-items: flex-start;
+          gap: 1rem;
+          transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .why-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(0, 0, 40, 0.05);
+        }
+        .why-icon {
+          width: 28px; height: 28px;
+          border-radius: 50%;
+          background: #eef3ff;
+          display: flex; align-items: center; justify-content: center;
+          flex-shrink: 0;
+          color: #0056b3;
+        }
+        .why-text {
+          font-size: 0.88rem;
+          color: #4b5563;
+          line-height: 1.6;
+          font-weight: 500;
+        }
+
+        /* ── BRANCHES SECTION ── */
+        .ab-branches {
+          background: #fff;
+        }
+        .ab-branches-container {
+          display: flex;
+          flex-direction: column;
+          gap: 3rem;
+          margin-top: 2.5rem;
+        }
+        .state-group-title {
+          font-size: 1.3rem;
+          font-weight: 800;
+          color: #0056b3;
+          border-bottom: 2px solid #eaecf4;
+          padding-bottom: 0.5rem;
+          margin-bottom: 1.5rem;
+          letter-spacing: -0.01em;
+          text-transform: uppercase;
+        }
+        .ab-branches-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.5rem;
+        }
+        @media (max-width: 768px) {
+          .ab-branches-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+        .branch-card {
+          background: #f7f8fb;
+          border: 1px solid #eaecf4;
+          border-radius: 12px;
+          padding: 1.5rem;
+          transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .branch-card:hover {
+          border-color: #c8d6ef;
+          box-shadow: 0 4px 16px rgba(0,86,179,0.06);
+        }
+        .branch-name {
+          font-size: 1.05rem;
+          font-weight: 800;
+          color: #0a0c18;
+          margin-bottom: 0.75rem;
+        }
+        .branch-address {
+          font-size: 0.88rem;
+          color: #555;
+          line-height: 1.6;
+          margin-bottom: 1rem;
+          display: flex;
+          align-items: flex-start;
+          gap: 0.5rem;
+        }
+        .branch-contact {
+          font-size: 0.85rem;
+          color: #0056b3;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+        }
+        .branch-contact-item {
+          background: #fff;
+          border: 1px solid #eaecf4;
+          padding: 0.4rem 0.8rem;
+          border-radius: 8px;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          color: #4b5563;
+        }
+        .branch-contact-item span {
+          color: #0056b3;
+          font-size: 16px;
+        }
+
+        /* ── INTERACTIVE OPS TABS ── */
+        .ab-ops-tabs {
+          display: flex;
+          justify-content: center;
+          gap: 1rem;
+          margin-bottom: 2.5rem;
+          flex-wrap: wrap;
+        }
+        .ab-ops-tab-btn {
+          background: #fff;
+          border: 1px solid #eaecf4;
+          padding: 0.75rem 1.5rem;
+          border-radius: 30px;
+          font-size: 0.88rem;
+          font-weight: 700;
+          color: #666;
+          cursor: pointer;
+          transition: all 0.25s ease;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+        .ab-ops-tab-btn.active {
+          background: #0056b3;
+          border-color: #0056b3;
+          color: #fff;
+          box-shadow: 0 4px 12px rgba(0,86,179,0.2);
+        }
+        .ab-ops-tab-btn:hover:not(.active) {
+          background: #f0f4ff;
+          color: #0056b3;
+          border-color: #0056b3;
+        }
+        .ab-ops-content-card {
+          background: #fff;
+          border: 1px solid #eaecf4;
+          border-radius: 20px;
+          padding: 2.5rem;
+          min-height: 300px;
+          box-shadow: 0 4px 20px rgba(0,0,40,0.02);
+        }
+        .ab-ops-grid-2col {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 3rem;
+        }
+        @media (max-width: 900px) {
+          .ab-ops-grid-2col {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+          }
         }
 
         /* ── SCROLL REVEALS (ABOUT) ── */
@@ -750,12 +996,12 @@ export const About: React.FC = () => {
               <span className="material-symbols-outlined ab-breadcrumb-sep" style={{ fontSize: 14 }}>chevron_right</span>
               <span className="ab-breadcrumb-current">About Us</span>
             </div>
-            <p className="ab-hero-eyebrow">Our Story</p>
+            <p className="ab-hero-eyebrow">ABOUT US</p>
             <h1 className="ab-hero-title">
-              Built on discipline.<br /><em>Driven by duty.</em>
+              Noble Security &<br /><em>Services</em>
             </h1>
             <p className="ab-hero-body">
-              Since 2015, Noble Security & Services has been the silent force behind safe operations across Maharashtra — from gated communities to industrial corridors.
+              An ISO 9001:2015 Certified Security Group Company providing a wide range of Security, Manpower, and Housekeeping Services. Delivering customized protection and peace of mind since 2015.
             </p>
           </div>
         </section>
@@ -778,10 +1024,13 @@ export const About: React.FC = () => {
 
               {/* Story text */}
               <div className="ab-story-text">
-                <p className="ab-eyebrow">Our Heritage</p>
-                <h2 className="ab-heading">Over a decade of <em>protected</em> operations</h2>
+                <p className="ab-eyebrow">Our Profile</p>
+                <h2 className="ab-heading">Integrated solutions <em>under one roof</em></h2>
                 <p className="ab-story-body">
-                  Since our inception in 2015, Noble Security & Services has been committed to providing uncompromising safety solutions across Maharashtra. We bridge the gap between traditional security presence and modern technological surveillance — ensuring that our clients, from residential complexes to large industrial hubs, rest easy.
+                  We are the best security guards service provider company in India since 2015. We are passionate about our work and truly believe in offering the best services to our clients at the most affordable cost. We continuously upgrade and improve ourselves to give you the best in security. Our philosophy is <strong>“Surksha Pratham Kartavya”</strong> (Security is Our Primary Duty).
+                </p>
+                <p className="ab-story-body">
+                  We provide integrated solutions to our clients by combining Security, Housekeeping and Manpower services under one roof, thereby enabling our clients to avoid multiple vendors and deal only with us for all such non-core tasks.
                 </p>
                 <div className="ab-divider" />
                 <div className="ab-stats-grid">
@@ -800,27 +1049,31 @@ export const About: React.FC = () => {
           </div>
         </section>
 
-        {/* ── MISSION & VISION ── */}
+        {/* ── MISSION & APPROACH ── */}
         <section className="ab-section ab-mv">
           <div className="ab-inner">
             <div style={{ textAlign: "center", marginBottom: "3rem" }}>
               <p className="ab-values-eyebrow">Purpose</p>
-              <h2 className="ab-heading">Mission & Vision</h2>
+              <h2 className="ab-heading">Philosophy & Approach</h2>
             </div>
             <div className="ab-mv-grid">
               <div className="ab-mv-card">
                 <div className="ab-mv-icon">
                   <span className="material-symbols-outlined" style={{ fontSize: 24, color: "#0056b3" }}>rocket_launch</span>
                 </div>
-                <div className="ab-mv-title">Our Mission</div>
-                <p className="ab-mv-body">To empower businesses and communities through innovative security intelligence and disciplined physical protection, setting a gold standard in the Indian private security sector.</p>
+                <div className="ab-mv-title">Our Philosophy & Mission</div>
+                <p className="ab-mv-body">
+                  We truly believe that Security is much more than mere deployment and monitoring of guards. It involves thorough identification of the roles and responsibilities of each guard and providing training to enable them to perform their duties most efficiently and productively. We aim to make your investment in security more productive and to relieve the management completely of security and all allied problems.
+                </p>
               </div>
               <div className="ab-mv-card vision">
                 <div className="ab-mv-icon">
                   <span className="material-symbols-outlined" style={{ fontSize: 24, color: "#1a7a4a" }}>visibility</span>
                 </div>
-                <div className="ab-mv-title">Our Vision</div>
-                <p className="ab-mv-body">To be the most trusted integrated security partner in the nation — recognized for our commitment to ethical values, technological integration, and unparalleled professional excellence.</p>
+                <div className="ab-mv-title">Tailored Security Solutions</div>
+                <p className="ab-mv-body">
+                  Manned Guarding is no longer a one-size-fits-all solution. Depending on the size, location, nature and requirements of the client’s business, we customize our solution after understanding the client’s pain points. We secure Corporates, Banks & Financial Institutions, Retail Outlets, Industrial Units, Residential and Commercial Buildings, Hospitals, Educational and Government Institutions.
+                </p>
               </div>
             </div>
           </div>
@@ -847,7 +1100,181 @@ export const About: React.FC = () => {
           </div>
         </section>
 
-        {/* ── CERTIFICATIONS (PLACEMENT 2) ── */}
+        {/* ── WHY US? (REASONS TO CHOOSE US) ── */}
+        <section className="ab-section ab-whyus">
+          <div className="ab-inner">
+            <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+              <p className="ab-values-eyebrow">Differentiators</p>
+              <h2 className="ab-heading">Why Choose Us?</h2>
+              <p className="ab-sub" style={{ maxWidth: "600px", margin: "1rem auto 0" }}>
+                Discover the key reasons why Noble Security & Services is the preferred choice for clients seeking security, housekeeping, and manpower solutions.
+              </p>
+            </div>
+            <div className="ab-whyus-grid">
+              {whyChooseUs.map((reason, i) => (
+                <div key={i} className="why-card">
+                  <div className="why-icon">
+                    <span className="material-symbols-outlined" style={{ fontSize: 16 }}>done</span>
+                  </div>
+                  <div className="why-text">{reason}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── TRAINING & COMPLIANCE (SECURITY OPERATIONS) ── */}
+        <section className="ab-section ab-training">
+          <div className="ab-inner">
+            <div className="ab-training-header">
+              <p className="ab-values-eyebrow">Operations</p>
+              <h2 className="ab-heading">Security Operations & Training</h2>
+              <p className="ab-training-sub">
+                Our strict recruitment, ongoing training, pre-deployment planning, and active post-deployment supervision ensure reliable protection.
+              </p>
+            </div>
+
+            {/* Interactive Tabs */}
+            <div className="ab-ops-tabs">
+              <button
+                className={`ab-ops-tab-btn ${activeOpsTab === "recruitment" ? "active" : ""}`}
+                onClick={() => setActiveOpsTab("recruitment")}
+              >
+                <span className="material-symbols-outlined">how_to_reg</span>
+                Recruitment & Training
+              </button>
+              <button
+                className={`ab-ops-tab-btn ${activeOpsTab === "modules" ? "active" : ""}`}
+                onClick={() => setActiveOpsTab("modules")}
+              >
+                <span className="material-symbols-outlined">menu_book</span>
+                Training Modules
+              </button>
+              <button
+                className={`ab-ops-tab-btn ${activeOpsTab === "operations" ? "active" : ""}`}
+                onClick={() => setActiveOpsTab("operations")}
+              >
+                <span className="material-symbols-outlined">published_with_changes</span>
+                Pre & Post Deployment
+              </button>
+            </div>
+
+            {/* Tab content */}
+            <div className="ab-ops-content-card">
+              {activeOpsTab === "recruitment" && (
+                <div className="ab-ops-grid-2col">
+                  <div>
+                    <h3 style={{ fontSize: "1.2rem", fontWeight: "800", color: "#0a0c18", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <span className="material-symbols-outlined" style={{ color: "#0056b3" }}>person_search</span>
+                      Stringent Selection & Recruitment
+                    </h3>
+                    <p style={{ fontSize: "0.9rem", color: "#555", lineHeight: "1.75", marginBottom: "1rem" }}>
+                      Utmost attention is given to the recruitment of our personnel by stringent parameters laid down as a group policy. This includes education, age, physical fitness, and background check.
+                    </p>
+                    <p style={{ fontSize: "0.9rem", color: "#555", lineHeight: "1.75" }}>
+                      Our dedicated recruitment department is strictly responsible for conducting police verifications, comprehensive background checks, and reviewing the service records of each employee before they are hired.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: "1.2rem", fontWeight: "800", color: "#0a0c18", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <span className="material-symbols-outlined" style={{ color: "#0056b3" }}>school</span>
+                      Comprehensive Ongoing Training
+                    </h3>
+                    <p style={{ fontSize: "0.9rem", color: "#555", lineHeight: "1.75", marginBottom: "1rem" }}>
+                      All Guarding Personnel undergo a Security Training Course, which imparts the necessary skills to perform their duties with great efficiency and productivity. The training process is ongoing and progressive throughout the employee's career to refresh and develop their knowledge.
+                    </p>
+                    <p style={{ fontSize: "0.9rem", color: "#555", lineHeight: "1.75" }}>
+                      We feature well-equipped classrooms with facilities such as projectors and training equipment. Site-specific training courses are designed after thorough site-visits and discussions with the client.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {activeOpsTab === "modules" && (
+                <div>
+                  <h3 style={{ fontSize: "1.2rem", fontWeight: "800", color: "#0a0c18", marginBottom: "1.5rem" }}>
+                    Our Security Training covers:
+                  </h3>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "2rem" }}>
+                    <div>
+                      <h4 style={{ fontSize: "1rem", fontWeight: "700", color: "#0056b3", marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <span className="material-symbols-outlined">fitness_center</span>
+                        1. Basics & Physicals
+                      </h4>
+                      <ul style={{ paddingLeft: "1.25rem", color: "#555", fontSize: "0.88rem", lineHeight: "1.7" }}>
+                        <li>Physical fitness training & drills</li>
+                        <li>Guarding personnel duties & responsibilities</li>
+                        <li>Conduct in public & courtesy</li>
+                        <li>Correct wearing of uniform & rank badges</li>
+                        <li>Alertness, obedience & mannerism</li>
+                        <li>Right to private defence & filing FIR</li>
+                        <li>Statutory benefits (PF, ESIC, LWF)</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 style={{ fontSize: "1rem", fontWeight: "700", color: "#0056b3", marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <span className="material-symbols-outlined">vpn_key</span>
+                        2. Trade & Technical Skills
+                      </h4>
+                      <ul style={{ paddingLeft: "1.25rem", color: "#555", fontSize: "0.88rem", lineHeight: "1.7" }}>
+                        <li>Handling security at reception, gates, stores, factories, residences, hotels, malls, banks, ATMs</li>
+                        <li>Patrolling premises & search procedures</li>
+                        <li>Handing & taking over procedures</li>
+                        <li>Register maintenance & log books</li>
+                        <li>Handling keys & CCTV systems</li>
+                        <li>Operating metal detectors & breath analysers</li>
+                        <li>Examining identification papers & report writing</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 style={{ fontSize: "1rem", fontWeight: "700", color: "#0056b3", marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <span className="material-symbols-outlined">emergency</span>
+                        3. Emergency Protocols
+                      </h4>
+                      <ul style={{ paddingLeft: "1.25rem", color: "#555", fontSize: "0.88rem", lineHeight: "1.7" }}>
+                        <li>First aid & life saving procedures</li>
+                        <li>Fire prevention & firefighting controls</li>
+                        <li>Crisis response & evacuation drills</li>
+                        <li>Disaster management guidelines</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeOpsTab === "operations" && (
+                <div className="ab-ops-grid-2col">
+                  <div>
+                    <h3 style={{ fontSize: "1.2rem", fontWeight: "800", color: "#0a0c18", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <span className="material-symbols-outlined" style={{ color: "#0056b3" }}>preview</span>
+                      Pre-Deployment Site Surveys
+                    </h3>
+                    <p style={{ fontSize: "0.9rem", color: "#555", lineHeight: "1.75", marginBottom: "1rem" }}>
+                      Before Noble Group takes up any assignment, the operation team visits the site for a survey to analyse and understand the security needs of the client’s premises.
+                    </p>
+                    <p style={{ fontSize: "0.9rem", color: "#555", lineHeight: "1.75" }}>
+                      Based on the survey, a custom security setup is designed. A detailed set of site-specific instructions, emergency procedures, client pain points, and a charter of duties is prepared in consultation with the client.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: "1.2rem", fontWeight: "800", color: "#0a0c18", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <span className="material-symbols-outlined" style={{ color: "#0056b3" }}>gps_fixed</span>
+                      Post-Deployment Supervision
+                    </h3>
+                    <ul style={{ color: "#555", fontSize: "0.88rem", lineHeight: "1.7", paddingLeft: "1.25rem" }}>
+                      <li><strong>Surprise Checks:</strong> Regular day and night checks by area officers, area managers, and senior executives.</li>
+                      <li><strong>Mobile App Tracking:</strong> Remote monitoring of guard movement and automated attendance with time & location punches.</li>
+                      <li><strong>Regular Rotation:</strong> Security personnel are transferred preferably every 12 months or per client requirements to prevent familiarity.</li>
+                      <li><strong>Customer Care Cell:</strong> Dedicated cell in touch with clients to collect feedback and resolve issues within 48 hours.</li>
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* ── CERTIFICATIONS ── */}
         <section className="ab-section ab-certs">
           <div className="ab-inner">
             <div style={{ textAlign: "center", marginBottom: "3rem" }}>
@@ -883,74 +1310,47 @@ export const About: React.FC = () => {
           </div>
         </section>
 
-        {/* ── LEADERSHIP ── */}
-        <section className="ab-section ab-leadership">
+        {/* ── OUR BRANCHES ── */}
+        <section className="ab-section ab-branches">
           <div className="ab-inner">
-            <div className="ab-leadership-header">
-              <p className="ab-eyebrow-light">Leadership</p>
-              <h2 className="ab-heading-light">The minds behind the shield</h2>
-              <p className="ab-leadership-sub">Decades of experience in defence, corporate security, and operational management — all under one roof.</p>
-            </div>
-            <div className="ab-leaders-grid">
-              {[
-                { name: "Rajesh Kumar", role: "Operations Head", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400" },
-                { name: "Ananya Sharma", role: "HR Manager", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400" },
-              ].map((l, i) => (
-                <div key={i} className="ab-leader-card">
-                  <div className="ab-leader-img-wrap">
-                    <img src={l.img} alt={l.name} />
-                  </div>
-                  <div className="ab-leader-name">{l.name}</div>
-                  <div className="ab-leader-role">{l.role}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── TRAINING & COMPLIANCE ── */}
-        <section className="ab-section ab-training">
-          <div className="ab-inner">
-            <div className="ab-training-header">
-              <p className="ab-values-eyebrow">Our Rigor</p>
-              <h2 className="ab-heading">Training & compliance excellence</h2>
-              <p className="ab-training-sub">Every officer undergoes a mandatory 15-day residential training program — adhering strictly to PSARA guidelines and international safety standards.</p>
+            <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+              <p className="ab-values-eyebrow">Our Offices</p>
+              <h2 className="ab-heading">Our Branches</h2>
+              <p className="ab-sub" style={{ maxWidth: "600px", margin: "1rem auto 0" }}>
+                Serving clients across Maharashtra, Karnataka, and Delhi with localized coordination and rapid response.
+              </p>
             </div>
 
-            <div className="ab-badges-grid">
-              {trainingBadges.map((b, i) => (
-                <div key={i} className="ab-badge-cell">
-                  <div className="ab-badge-icon-wrap">
-                    <span className="material-symbols-outlined" style={{ fontSize: 22, color: "#0056b3" }}>{b.icon}</span>
-                  </div>
-                  <div className="ab-badge-label">{b.label}</div>
-                </div>
-              ))}
-            </div>
-
-            <div className="ab-compliance-block">
-              <div>
-                <div className="ab-compliance-title">Integrated Training Protocol</div>
-                <p className="ab-compliance-body">Our training transforms recruits into disciplined security professionals — covering physical fitness, guard drills, visitor gate protocols, log maintenance, and crisis response.</p>
-                <p className="ab-compliance-body">Compliance is central to our brand. Full adherence to PF, ESIC, GST, and all regulatory labour laws eliminates legal risk for our clients.</p>
-                <ul className="ab-compliance-list">
-                  {[
-                    "PSARA Licensed Operations (License #27AHTPN)",
-                    "ISO 9001:2015 Certified Management Systems",
-                    "100% Police Verified & Screened Guards",
-                  ].map((item, i) => (
-                    <li key={i} className="ab-compliance-item">
-                      <div className="ab-compliance-check">
-                        <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>check</span>
+            <div className="ab-branches-container">
+              {branches.map((b, i) => (
+                <div key={i}>
+                  <h3 className="state-group-title">{b.state}</h3>
+                  <div className="ab-branches-grid">
+                    {b.offices.map((office, idx) => (
+                      <div key={idx} className="branch-card">
+                        <div className="branch-name">{office.name}</div>
+                        <div className="branch-address">
+                          <span className="material-symbols-outlined" style={{ color: "#0056b3", fontSize: 18, marginTop: "2px" }}>location_on</span>
+                          {office.address}
+                        </div>
+                        {office.phones.length > 0 && (
+                          <div className="branch-contact">
+                            <span style={{ color: "#555", display: "flex", alignItems: "center" }}>
+                              <span className="material-symbols-outlined" style={{ fontSize: 18, marginRight: "4px" }}>phone</span>
+                              Contact:
+                            </span>
+                            {office.phones.map((phone, pIdx) => (
+                              <a href={`tel:${phone}`} key={pIdx} className="branch-contact-item">
+                                {phone}
+                              </a>
+                            ))}
+                          </div>
+                        )}
                       </div>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="ab-compliance-img">
-                <img src="/sg2.jpeg" alt="Security Training" />
-              </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>

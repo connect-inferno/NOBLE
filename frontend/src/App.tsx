@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import { WhatsAppButton } from "./components/WhatsAppButton";
@@ -11,6 +11,10 @@ import { Contact } from "./pages/Contact";
 function App() {
   const [currentPage, setCurrentPage] = useState<string>("home");
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
   const renderPage = () => {
     switch (currentPage) {
       case "home":
@@ -20,7 +24,7 @@ function App() {
       case "services":
         return <ServicesPage setCurrentPage={setCurrentPage} />;
       case "clients":
-        return <Clients />;
+        return <Clients setCurrentPage={setCurrentPage} />;
       case "contact":
         return <Contact />;
       default:
