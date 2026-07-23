@@ -1,41 +1,123 @@
 import React from "react";
 
-export const Clients: React.FC = () => {
+interface ClientsProps {
+  setCurrentPage?: (page: string) => void;
+}
+
+export const Clients: React.FC<ClientsProps> = ({ setCurrentPage }) => {
   const partners = [
-    { name: "Mehta Logistics", sector: "Industrial & Warehousing" },
-    { name: "Allied Bank", sector: "Financial Services" },
-    { name: "TechNova Events", sector: "Event Security" },
-    { name: "Green Valley Residency", sector: "Residential Gated Community" },
-    { name: "Maharashtra Trade Center", sector: "Commercial Complex" },
-    { name: "Apex Healthcare Hospital", sector: "Hospital & Medical Care" },
-    { name: "Hinjewadi IT Plaza", sector: "Corporate IT Park" },
-    { name: "Sangli District Agro Co-op", sector: "Government/Co-operative" },
-    { name: "Silver Malls India", sector: "Retail & Loss Prevention" },
-    { name: "St. Jude Campus", sector: "Educational Institution" },
-    { name: "City Logistics Hub", sector: "Supply Chain & Staffing" },
-    { name: "Skyline Tower Association", sector: "Facility Management" },
+    {
+      name: "Kishore Infra Tech",
+      sector: "Infrastructure & Engineering",
+      logo: <img src="/kishore-Infra-tech.webp" alt="Kishore Infra Tech" className="partner-logo" />,
+    },
+    {
+      name: "Anand Sagar Trust",
+      sector: "Educational Institution",
+      logo: <img src="/anandsagar-edu-trust-logo.png" alt="Anand Sagar Education Trust" className="partner-logo" />,
+    },
+    {
+      name: "Govt. Polytechnic, Miraj",
+      sector: "Educational Institution",
+      logo: <img src="/govpolymiraj.png" alt="Government Polytechnic Miraj" className="partner-logo" />,
+    },
+    {
+      name: "Brihanmumbai Municipal Corp",
+      sector: "Government & Public Sector",
+      logo: <img src="/bmc_logo.png" alt="BMC Logo" className="partner-logo" />,
+    },
+    {
+      name: "Sangli Municipal Corp",
+      sector: "Government & Public Sector",
+      logo: <img src="/munc_logo.png" alt="Municipal Corporation Logo" className="partner-logo" />,
+    },
+    {
+      name: "SAEL Limited",
+      sector: "Industrial & Green Energy",
+      logo: <img src="/sael-logo.svg" alt="SAEL Logo" className="partner-logo" />,
+    },
+    {
+      name: "Air India",
+      sector: "Aviation",
+      logo: <img src="/AI_Logo_Red.svg" alt="AI Logo" className="partner-logo" />,
+    },
+    {
+      name: "PB Group",
+      sector: "Logistics & Supply Chain",
+      logo: <img src="/PB_Logo.png" alt="PB Logo" className="partner-logo" />,
+    },
+    {
+      name: "Kishore Infra Tech",
+      sector: "Infrastructure & Engineering",
+      logo: <img src="/kishore-Infra-tech.webp" alt="Kishore Infra Tech" className="partner-logo" />,
+    },
+    {
+      name: "Anand Sagar Trust",
+      sector: "Educational Institution",
+      logo: <img src="/anandsagar-edu-trust-logo.png" alt="Anand Sagar Education Trust" className="partner-logo" />,
+    },
+    {
+      name: "Brihanmumbai Municipal Corp",
+      sector: "Government & Public Sector",
+      logo: <img src="/bmc_logo.png" alt="BMC Logo" className="partner-logo" />,
+    },
+    {
+      name: "SAEL Limited",
+      sector: "Industrial & Green Energy",
+      logo: <img src="/sael-logo.svg" alt="SAEL Logo" className="partner-logo" />,
+    },
+    {
+      name: "TATA POWER",
+      sector: "Electric Power Distribution",
+      logo: <img src="/tp-logo.svg" alt="TATA POWER LOGO" className="partner-logo" />,
+    },
+    {
+      name: "Padmabhooshan Vasantraodada Patil Institute of Technology",
+      sector: "Education",
+      logo: <img src="/pvpit.jpeg" alt="PVPIT Logo" className="partner-logo" />,
+    },
+    {
+      name: "All India Radio",
+      sector: "Government & Public Sector",
+      logo: <img src="/br.jpeg" alt="All India Radio Logo" className="partner-logo" />,
+    },
+    {
+      name: "Indirect Taxes and Customs",
+      sector: "Government & Public Sector",
+      logo: <img src="/customs.jpeg" alt="Indirect Taxes and Customs Logo" className="partner-logo" />,
+    },
+    {
+      name: "Galaxy Solar",
+      sector: "Industrial & Green Energy",
+      logo: <img src="/gs.jpeg" alt="Galaxy Solar Logo" className="partner-logo" />,
+    },
+    {
+      name: "Income Tax Department",
+      sector: "Government & Public Sector",
+      logo: <img src="/itd.jpeg" alt="Income Tax Department Logo" className="partner-logo" />
+    },
   ];
 
-  const row1 = partners.slice(0, 4);
-  const row2 = partners.slice(4, 8);
-  const row3 = partners.slice(8, 12);
+  const row1 = partners.slice(0, 5);
+  const row2 = partners.slice(5, 11);
+  const row3 = partners.slice(11, 18);
 
   const sectors = [
-    { icon: "factory",          name: "Industrial",  desc: "Comprehensive protection for manufacturing plants, warehouses, and logistics hubs." },
-    { icon: "apartment",        name: "Residential", desc: "Gated communities and high-rise apartments with smart visitor management systems." },
-    { icon: "account_balance",  name: "Banking",     desc: "High-risk security protocols, vault guards, and ATM monitoring for finance centers." },
-    { icon: "school",           name: "Educational", desc: "Safe, secure, and disciplined campus environments for schools and universities." },
-    { icon: "local_hospital",   name: "Healthcare",  desc: "Patient wing safety, visitor management, and crowd control for medical complexes." },
-    { icon: "shopping_cart",    name: "Retail",      desc: "Loss prevention, floor vigilance, and asset protection for shopping malls." },
-    { icon: "event_seat",       name: "Events",      desc: "Bouncer services, rapid risk mitigation, and crowd controls for corporate events." },
-    { icon: "cloud_done",       name: "IT Parks",    desc: "Advanced electronic surveillance integration and strict biometric access controls." },
+    { icon: "factory", name: "Industrial", desc: "Comprehensive protection for manufacturing plants, warehouses, and logistics hubs." },
+    { icon: "apartment", name: "Residential", desc: "Gated communities and high-rise apartments with smart visitor management systems." },
+    { icon: "account_balance", name: "Banking", desc: "High-risk security protocols, vault guards, and ATM monitoring for finance centers." },
+    { icon: "school", name: "Educational", desc: "Safe, secure, and disciplined campus environments for schools and universities." },
+    { icon: "local_hospital", name: "Healthcare", desc: "Patient wing safety, visitor management, and crowd control for medical complexes." },
+    { icon: "shopping_cart", name: "Retail", desc: "Loss prevention, floor vigilance, and asset protection for shopping malls." },
+    { icon: "event_seat", name: "Events", desc: "Bouncer services, rapid risk mitigation, and crowd controls for corporate events." },
+    { icon: "cloud_done", name: "IT Parks", desc: "Advanced electronic surveillance integration and strict biometric access controls." },
   ];
 
   const certifications = [
-    { icon: "verified_user",  title: "PSARA Licensed",  desc: "Maharashtra Private Security Agencies Regulation Act compliant." },
-    { icon: "receipt_long",   title: "GST Registered",  desc: "GSTIN: 27AHTPN6678H2ZE. Fully tax-compliant invoicing." },
-    { icon: "task_alt",       title: "MSME Verified",   desc: "Registered micro enterprise with corporate vendor compliance." },
-    { icon: "gavel",          title: "Govt Compliant",  desc: "Strict adherence to ESIC, Provident Fund (PF), and labour laws." },
+    { icon: "verified_user", title: "PSARA Licensed", desc: "Maharashtra Private Security Agencies Regulation Act compliant." },
+    { icon: "receipt_long", title: "GST Registered", desc: "GSTIN: 27AHTPN6678H2ZE. Fully tax-compliant invoicing." },
+    { icon: "task_alt", title: "MSME Verified", desc: "Registered micro enterprise with corporate vendor compliance." },
+    { icon: "gavel", title: "Govt Compliant", desc: "Strict adherence to ESIC, Provident Fund (PF), and labour laws." },
   ];
 
   const dup = (arr: typeof partners) => [...arr, ...arr, ...arr];
@@ -44,6 +126,12 @@ export const Clients: React.FC = () => {
     <>
       <style>{`
         .cl-page { width: 100%; font-family: inherit; }
+        .partner-logo {
+          max-width: 88%;
+          max-height: 88%;
+          object-fit: contain;
+          display: block;
+        }
 
         /* ── HERO — matches Services / About dark hero ── */
         .cl-hero {
@@ -215,11 +303,11 @@ export const Clients: React.FC = () => {
         }
         .mq-card {
           flex-shrink: 0;
-          width: 240px;
+          width: 290px;
           background: #fff;
           border: 1px solid #eaecf4;
           border-radius: 14px;
-          padding: 1.25rem 1.5rem;
+          padding: 1rem 1.25rem;
           display: flex;
           align-items: center;
           gap: 1rem;
@@ -232,14 +320,15 @@ export const Clients: React.FC = () => {
           transform: translateY(-2px);
         }
         .mq-icon {
-          width: 40px; height: 40px;
-          border-radius: 10px;
-          background: #eef3ff;
+          width: 54px; height: 54px;
+          border-radius: 12px;
+          background: #f8fafc;
+          border: 1px solid #f1f5f9;
           display: flex; align-items: center; justify-content: center;
           flex-shrink: 0;
         }
-        .mq-name { font-size: 0.82rem; font-weight: 700; color: #0a0c18; line-height: 1.3; }
-        .mq-sector { font-size: 0.68rem; color: #999; margin-top: 2px; }
+        .mq-name { font-size: 0.86rem; font-weight: 700; color: #0a0c18; line-height: 1.3; }
+        .mq-sector { font-size: 0.7rem; color: #777; margin-top: 2px; }
 
         /* ── SECTORS — dark, same as other pages ── */
         .cl-sectors {
@@ -589,7 +678,7 @@ export const Clients: React.FC = () => {
                 {dup(row).map((p, i) => (
                   <div className="mq-card" key={i}>
                     <div className="mq-icon">
-                      <span className="material-symbols-outlined" style={{ fontSize: 20, color: "#0056b3" }}>corporate_fare</span>
+                      {p.logo}
                     </div>
                     <div>
                       <div className="mq-name">{p.name}</div>
@@ -633,9 +722,9 @@ export const Clients: React.FC = () => {
             </div>
             <div className="cl-testi-grid">
               {[
-                { quote: "Their response time and professional demeanor are unmatched. We've seen a significant reduction in security incidents since partnering with Noble.", author: "Rajesh Mehta", role: "MD, Mehta Logistics" },
-                { quote: "A truly tech-enabled security firm. Their integrated monitoring and visitor logging have simplified our facility operations immensely.", author: "Anjali Kulkarni", role: "Director, Green Valley Residency" },
-                { quote: "Exceptional bouncer services for our corporate gala. Disciplined, polite, and firm — handled a crowd of 2000+ guests effortlessly.", author: "Sameer Khan", role: "Ops Manager, TechNova Events" },
+                { quote: "Their response time and professional demeanor are unmatched. We've seen a significant reduction in security incidents since partnering with Noble.", author: "Arjun Pujari" },
+                { quote: "A truly tech-enabled security firm. Their integrated monitoring and visitor logging have simplified our facility operations immensely.", author: "Sammed Sidnale" },
+                { quote: "Exceptional security services. Disciplined, polite, and firm — they handled our facility operations and logistics seamlessly.", author: "Akash Patil" },
               ].map((t, i) => (
                 <div key={i} className="cl-testi-card">
                   <div className="cl-testi-stars">
@@ -648,7 +737,6 @@ export const Clients: React.FC = () => {
                     <div className="cl-testi-avatar">{t.author.charAt(0)}</div>
                     <div>
                       <div className="cl-testi-name">{t.author}</div>
-                      <div className="cl-testi-role">{t.role}</div>
                     </div>
                   </div>
                 </div>
@@ -686,7 +774,7 @@ export const Clients: React.FC = () => {
             <p className="cl-cta-eyebrow">Get Started</p>
             <h2 className="cl-cta-title">Ready to become a Noble client?</h2>
             <p className="cl-cta-sub">Talk to our operations team for a site-specific security assessment — at no cost.</p>
-            <button className="cl-cta-btn">
+            <button className="cl-cta-btn" onClick={() => setCurrentPage?.("contact")}>
               <span className="material-symbols-outlined" style={{ fontSize: 18 }}>arrow_forward</span>
               Request a Free Assessment
             </button>

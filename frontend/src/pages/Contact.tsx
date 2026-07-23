@@ -546,13 +546,13 @@ export const Contact: React.FC = () => {
             <div className="ct-hours-grid">
               <div className="ct-hours-cell">
                 <div className="ct-hours-cell-title">Sangli HQ</div>
-                <div className="ct-hours-time">09:00 AM – 07:00 PM</div>
+                <div className="ct-hours-time">10:00 AM – 10:00 PM</div>
                 <div className="ct-hours-days">Monday – Saturday</div>
                 <div className="ct-hours-note">Closed Sundays &amp; National Holidays</div>
               </div>
               <div className="ct-hours-cell">
                 <div className="ct-hours-cell-title">Pune Branch</div>
-                <div className="ct-hours-time">10:00 AM – 06:00 PM</div>
+                <div className="ct-hours-time">10:00 AM – 10:00 PM</div>
                 <div className="ct-hours-days">Monday – Friday</div>
                 <div className="ct-hours-note" style={{ fontWeight: 600 }}>Saturday by appointment only</div>
               </div>

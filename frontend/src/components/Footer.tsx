@@ -1,5 +1,20 @@
 import React from "react";
 
+// =========================================================================
+// SOCIAL MEDIA CONFIGURATION
+// Paste your social links and WhatsApp number here.
+// =========================================================================
+// WhatsApp: Enter phone number with country code (no '+' or special characters)
+// Example: "919823245552"
+const WHATSAPP_NUMBER = "919823245552";
+
+// Instagram: Enter complete profile URL
+const INSTAGRAM_URL = "https://www.instagram.com/your_username/";
+
+// LinkedIn: Enter complete company or profile URL
+const LINKEDIN_URL = "https://www.linkedin.com/company/your-company/";
+// =========================================================================
+
 interface FooterProps {
   setCurrentPage: (page: string) => void;
 }
@@ -19,12 +34,11 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
             onClick={() => handleNavClick("home")}
             className="font-headline-md text-headline-md font-bold text-white flex items-center gap-2 cursor-pointer focus:outline-none"
           >
-            <span
-              className="material-symbols-outlined text-4xl"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-            >
-              security
-            </span>
+            <img
+              src="/logo.jpeg"
+              alt="Noble Security Logo"
+              className="w-10 h-10 rounded-lg object-cover border border-white/10"
+            />
             Noble Security
           </button>
           <p className="text-secondary-fixed-dim text-body-md leading-relaxed">
@@ -32,25 +46,43 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
           </p>
           <div className="flex gap-4">
             <a
-              href="#"
+              href={`https://wa.me/9823245552`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-surface-variant/20 flex items-center justify-center hover:bg-primary transition-all duration-200"
-              aria-label="Facebook"
+              aria-label="WhatsApp"
             >
-              <span className="material-symbols-outlined text-white">public</span>
+              <img
+                src="/social.png"
+                alt="WhatsApp"
+                className="w-10 h-10 object-contain"
+              />
             </a>
             <a
-              href="#"
+              href="https://www.instagram.com/invites/contact/?igsh=r7cdiva3xw5q&utm_content=hzaa4da"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-surface-variant/20 flex items-center justify-center hover:bg-primary transition-all duration-200"
-              aria-label="Share"
+              aria-label="Instagram"
             >
-              <span className="material-symbols-outlined text-white">share</span>
+              <img
+                src="/instagram.png"
+                alt="Instagram"
+                className="w-10 h-10 object-contain"
+              />
             </a>
             <a
-              href="mailto:info@noblesecurity.co.in"
+              href="https://www.linkedin.com/in/noblesecurity-services-50b191424?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-surface-variant/20 flex items-center justify-center hover:bg-primary transition-all duration-200"
-              aria-label="Email"
+              aria-label="LinkedIn"
             >
-              <span className="material-symbols-outlined text-white">alternate_email</span>
+              <img
+                src="/linkedin.png"
+                alt="LinkedIn"
+                className="w-10 h-10 object-contain"
+              />
             </a>
           </div>
         </div>
@@ -114,13 +146,13 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
             <li className="flex gap-3 items-start">
               <span className="material-symbols-outlined text-primary-fixed shrink-0">location_on</span>
               <span>
-                <strong>Sangli HQ:</strong> Plot 15, Sector 4, Market Yard, Sangli - 416416
+                <strong>Sangli HQ:</strong> G-3, Girnar Tower, Opp. PNG Showroom, Sangli-Miraj Road, Vishrambag, Sangli – 416415, Maharashtra
               </span>
             </li>
             <li className="flex gap-3 items-start">
               <span className="material-symbols-outlined text-primary-fixed shrink-0">location_on</span>
               <span>
-                <strong>Pune Branch:</strong> Office 402, Security Plaza, Hinjewadi Phase 1, Pune
+                <strong>Pune Branch:</strong> F-11, Building No. 33, Phase-II, Gahunje, Tal: Maval, Dist: Pune - 412101, Maharashtra
               </span>
             </li>
             <li className="flex gap-3 items-center">
@@ -134,17 +166,9 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
       {/* Bottom Legal bar */}
       <div className="border-t border-white/10 py-8 px-gutter">
         <div className="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-secondary-fixed-dim text-label-sm">
-          <p>© 2024 Noble Security & Services. All Rights Reserved.</p>
+          <p>© 2026 Noble Security & Services. All Rights Reserved.</p>
           <div className="flex gap-8">
-            <a href="#" className="hover:text-white transition-colors duration-200">
-              Privacy Policy
-            </a>
-            <a href="#" className="hover:text-white transition-colors duration-200">
-              Terms of Service
-            </a>
-            <a href="#" className="hover:text-white transition-colors duration-200">
-              Sitemap
-            </a>
+            <p>Designed and Developed by Infernos IT Solutions</p>
           </div>
         </div>
       </div>
