@@ -9,10 +9,10 @@ import React from "react";
 const WHATSAPP_NUMBER = "919823245552";
 
 // Instagram: Enter complete profile URL
-const INSTAGRAM_URL = "https://www.instagram.com/your_username/";
+const INSTAGRAM_URL = "https://www.instagram.com/invites/contact/?igsh=r7cdiva3xw5q&utm_content=hzaa4da";
 
 // LinkedIn: Enter complete company or profile URL
-const LINKEDIN_URL = "https://www.linkedin.com/company/your-company/";
+const LINKEDIN_URL = "https://www.linkedin.com/in/noblesecurity-services-50b191424?utm_source=share_via&utm_content=profile&utm_medium=member_android";
 // =========================================================================
 
 interface FooterProps {
@@ -46,7 +46,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
           </p>
           <div className="flex gap-4">
             <a
-              href={`https://wa.me/9823245552`}
+              href={`https://wa.me/${WHATSAPP_NUMBER}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-surface-variant/20 flex items-center justify-center hover:bg-primary transition-all duration-200"
@@ -59,7 +59,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
               />
             </a>
             <a
-              href="https://www.instagram.com/invites/contact/?igsh=r7cdiva3xw5q&utm_content=hzaa4da"
+              href={INSTAGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-surface-variant/20 flex items-center justify-center hover:bg-primary transition-all duration-200"
@@ -72,7 +72,7 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
               />
             </a>
             <a
-              href="https://www.linkedin.com/in/noblesecurity-services-50b191424?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+              href={LINKEDIN_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-surface-variant/20 flex items-center justify-center hover:bg-primary transition-all duration-200"

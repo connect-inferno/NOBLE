@@ -13,6 +13,14 @@ function App() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    const titles: Record<string, string> = {
+      home: "Noble Security Services | Top Security Agency in Sangli & Pune",
+      about: "About Us | Noble Security & Services",
+      services: "Security & Housekeeping Services | Noble Security",
+      clients: "Our Valued Clients & Partners | Noble Security",
+      contact: "Contact Us | Noble Security & Services Sangli & Pune",
+    };
+    document.title = titles[currentPage] || titles.home;
   }, [currentPage]);
 
   const renderPage = () => {
