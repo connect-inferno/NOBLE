@@ -518,8 +518,10 @@ export const Contact: React.FC = () => {
               <div className="ct-map">
                 <iframe
                   title="Noble Security Sangli Office"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3818.5284166299863!2d74.59599547516248!3d16.850024483944686!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc123019f243009%3A0xe9634f195864197e!2sMarket%20Yard%2C%20Sangli%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1715854321000!5m2!1sen!2sin"
-                  allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d954.6339925635245!2d74.59175622846969!3d16.849360998992616!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc123688cf1d519%3A0xe12915467031ca22!2sNOBLE%20SECURITY%20AND%20SERVICES!5e0!3m2!1sen!2sin!4v1784908232894!5m2!1sen!2sin"
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
                 />
               </div>
               <div className="ct-address-card">

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.noblesecurityservices.com/sitemap.xml
+Sitemap: https://noblesecurityservices.com/sitemap.xml
