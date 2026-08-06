@@ -4,9 +4,6 @@ import React from "react";
 // SOCIAL MEDIA CONFIGURATION
 // Paste your social links and WhatsApp number here.
 // =========================================================================
-// WhatsApp: Enter phone number with country code (no '+' or special characters)
-// Example: "919823245552"
-const WHATSAPP_NUMBER = "919823245552";
 
 // Instagram: Enter complete profile URL
 const INSTAGRAM_URL = "https://www.instagram.com/invites/contact/?igsh=r7cdiva3xw5q&utm_content=hzaa4da";
@@ -168,7 +165,17 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
         <div className="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-secondary-fixed-dim text-label-sm">
           <p>© 2026 Noble Security & Services. All Rights Reserved.</p>
           <div className="flex gap-8">
-            <p>Designed and Developed by Infernos IT Solutions</p>
+            <p>
+              Designed and Developed by{" "}
+              <a
+                href="https://www.infernos.co.in/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="glow-link-infernos ml-1"
+              >
+                Infernos IT Solutions
+              </a>
+            </p>
           </div>
         </div>
       </div>

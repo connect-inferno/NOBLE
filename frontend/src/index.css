@@ -154,3 +154,19 @@
 .faq-item.active .faq-icon {
   transform: rotate(180deg);
 }
+
+/* Glow link for Infernos IT Solutions */
+.glow-link-infernos {
+  font-weight: 600;
+  color: #69f7f4;
+  text-shadow: 0 0 8px rgba(105, 247, 244, 0.6), 0 0 16px rgba(105, 247, 244, 0.4);
+  transition: all 0.3s ease-in-out;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.glow-link-infernos:hover {
+  color: #ffffff;
+  text-shadow: 0 0 10px #69f7f4, 0 0 20px #69f7f4, 0 0 30px #45dbd7;
+  transform: translateY(-1px);
+}
