@@ -10,6 +10,9 @@ const INSTAGRAM_URL = "https://www.instagram.com/invites/contact/?igsh=r7cdiva3x
 
 // LinkedIn: Enter complete company or profile URL
 const LINKEDIN_URL = "https://www.linkedin.com/in/noblesecurity-services-50b191424?utm_source=share_via&utm_content=profile&utm_medium=member_android";
+
+// WhatsApp: Enter phone number with country code (no + or spaces)
+const WHATSAPP_NUMBER = "9823245552";
 // =========================================================================
 
 interface FooterProps {
