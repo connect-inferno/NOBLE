@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useSEO } from "../hooks/useSEO";
 
 interface HomeProps {
   setCurrentPage: (page: string) => void;
@@ -22,6 +23,17 @@ function useReveal(threshold = 0.15) {
 }
 
 export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
+  // Task 1, 2: Programmatic SEO for Home page
+  useSEO({
+    title: "Top Security Agency in Sangli & Pune",
+    description:
+      "Noble Security Services provides military-grade security guards, bouncers, armed gunmen, and housekeeping services across Sangli and Pune, Maharashtra.",
+    canonical: "/",
+    keywords:
+      "Noble Security Services, Security Agency Sangli, Security Guards Pune, Bouncers Maharashtra, Armed Gunmen Sangli, Best Security Company Pune, Industrial Security Maharashtra",
+    location: "all",
+  });
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const heroSlides = [
     {

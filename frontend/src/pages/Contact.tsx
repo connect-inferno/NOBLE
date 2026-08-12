@@ -1,12 +1,93 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { useSEO } from "../hooks/useSEO";
+
+// ── Task 3, 10: Input Sanitization & Validation helpers ────────────────────────
+/** Strip HTML tags, null bytes, and dangerous characters from a string */
+function sanitize(value: string): string {
+  return value
+    .replace(/<[^>]*>/g, "")         // strip HTML tags
+    .replace(/\0/g, "")              // strip null bytes
+    .replace(/[<>"'`]/g, "")         // strip HTML special chars (XSS prevention)
+    .trim();
+}
+
+/** Validate email with RFC 5322 simplified regex */
+function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+}
+
+// ── Task 8, 18: Client-side Rate Limiting ─────────────────────────────────────
+const RATE_LIMIT_KEY = "noble_contact_submissions";
+const RATE_LIMIT_MAX = 3;          // max submissions
+const RATE_LIMIT_WINDOW = 5 * 60 * 1000; // 5 minutes in ms
+
+function getRateLimitData(): { timestamps: number[] } {
+  try {
+    const raw = localStorage.getItem(RATE_LIMIT_KEY);
+    return raw ? JSON.parse(raw) : { timestamps: [] };
+  } catch {
+    return { timestamps: [] };
+  }
+}
+
+function isRateLimited(): boolean {
+  const data = getRateLimitData();
+  const now = Date.now();
+  // Filter out timestamps older than the window
+  const recent = data.timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW);
+  return recent.length >= RATE_LIMIT_MAX;
+}
+
+function recordSubmission(): void {
+  const data = getRateLimitData();
+  const now = Date.now();
+  const recent = data.timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW);
+  recent.push(now);
+  localStorage.setItem(RATE_LIMIT_KEY, JSON.stringify({ timestamps: recent }));
+}
+
+// ── Task 9: Contact Form Audit Trail (localStorage) ───────────────────────────
+interface AuditEntry {
+  timestamp: string;
+  subject: string;
+  status: "submitted" | "rate_limited" | "validation_failed";
+}
+
+function logAuditEntry(entry: AuditEntry): void {
+  try {
+    const raw = localStorage.getItem("noble_contact_audit") ?? "[]";
+    const log: AuditEntry[] = JSON.parse(raw);
+    log.push(entry);
+    // Keep last 50 entries only
+    const trimmed = log.slice(-50);
+    localStorage.setItem("noble_contact_audit", JSON.stringify(trimmed));
+  } catch {
+    // Silently fail — audit logging must never break UX
+  }
+}
 
 export const Contact: React.FC = () => {
+  // Task 1, 2: SEO for Contact page
+  useSEO({
+    title: "Contact Us",
+    description:
+      "Get in touch with Noble Security Services. Reach our 24/7 operations center in Sangli and Pune for security service inquiries.",
+    canonical: "/contact",
+    keywords: "Contact Noble Security Services, Security Services Inquiry Sangli, Security Agency Pune Contact",
+    location: "all",
+  });
+
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [formData, setFormData] = useState({
     name: "", email: "", subject: "General Inquiry", message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  // Task 3, 10: Field-level validation error state
+  const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({});
+  // Task 8, 16: Rate-limit and honeypot state
+  const [rateLimited, setRateLimited] = useState(false);
+  const honeypotRef = useRef<HTMLInputElement>(null);
 
   const faqs = [
     { q: "What types of security personnel do you provide?", a: "We provide trained Unarmed Guards, Licensed Armed Gunmen, Corporate Security Officers, Event Bouncers, and specialised Executive Protection agents based on your requirements." },
@@ -16,15 +97,63 @@ export const Contact: React.FC = () => {
     { q: "How can I request a security audit for my business?", a: "Use the contact form, send an email, or call our main line. Our security consultants will schedule a site visit and perform a comprehensive vulnerability assessment free of charge." },
   ];
 
+  // Task 3, 10: Sanitize on every change, validate on blur
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    // Sanitize input in real-time (strip HTML/injection chars)
+    const sanitized = sanitize(value);
+    setFormData(prev => ({ ...prev, [name]: sanitized }));
+    // Clear error on change
+    if (errors[name as keyof typeof errors]) {
+      setErrors(prev => ({ ...prev, [name]: undefined }));
+    }
+  };
+
+  // Task 10: Validate all fields before submit
+  const validateForm = (): boolean => {
+    const newErrors: typeof errors = {};
+    if (!formData.name || formData.name.length < 2) {
+      newErrors.name = "Name must be at least 2 characters.";
+    }
+    if (!formData.email || !isValidEmail(formData.email)) {
+      newErrors.email = "Please enter a valid email address.";
+    }
+    if (!formData.message || formData.message.length < 10) {
+      newErrors.message = "Message must be at least 10 characters.";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) return;
+
+    // Task 16: Honeypot check — if bot filled the hidden field, silently reject
+    if (honeypotRef.current?.value) {
+      logAuditEntry({ timestamp: new Date().toISOString(), subject: formData.subject, status: "rate_limited" });
+      // Fake success to fool bots
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 5000);
+      return;
+    }
+
+    // Task 8, 18: Client-side rate limiting
+    if (isRateLimited()) {
+      setRateLimited(true);
+      logAuditEntry({ timestamp: new Date().toISOString(), subject: formData.subject, status: "rate_limited" });
+      return;
+    }
+
+    // Task 10: Input validation
+    if (!validateForm()) {
+      logAuditEntry({ timestamp: new Date().toISOString(), subject: formData.subject, status: "validation_failed" });
+      return;
+    }
+
     setIsSubmitting(true);
+    recordSubmission();
+    logAuditEntry({ timestamp: new Date().toISOString(), subject: formData.subject, status: "submitted" });
+
     setTimeout(() => {
       setFormData({ name: "", email: "", subject: "General Inquiry", message: "" });
       setIsSubmitting(false);
@@ -251,6 +380,27 @@ export const Contact: React.FC = () => {
         }
         @keyframes ctSpin { to { transform: rotate(360deg); } }
 
+        /* Task 10: Field validation error styles */
+        .ct-input-error {
+          border-color: #e03a3a !important;
+          box-shadow: 0 0 0 3px rgba(224,58,58,0.08) !important;
+        }
+        .ct-field-error {
+          display: block;
+          font-size: 0.72rem;
+          color: #e03a3a;
+          font-weight: 600;
+          margin-top: 0.25rem;
+        }
+        /* Task 21: Error message banner — safe, non-technical */
+        .ct-error-banner {
+          display: flex; align-items: center; gap: 0.75rem;
+          background: #fff3f3; border: 1px solid #f5c6c6;
+          border-radius: 10px; padding: 1rem 1.25rem;
+          margin-bottom: 1.25rem;
+          font-size: 0.88rem; font-weight: 600; color: #c0392b;
+        }
+
         /* Map + address */
         .ct-map-wrap { display: flex; flex-direction: column; gap: 1.25rem; }
         .ct-map {
@@ -472,27 +622,79 @@ export const Contact: React.FC = () => {
               <div className="ct-form-title">Send us a message</div>
               <div className="ct-form-sub">We'll respond within one business day.</div>
 
+              {/* Task 21: Hardened success message — no internal details exposed */}
               {submitted && (
-                <div className="ct-success">
+                <div className="ct-success" role="alert">
                   <span className="material-symbols-outlined" style={{ fontSize: 20, fontVariationSettings: "'FILL' 1" }}>check_circle</span>
-                  Message sent — we'll be in touch shortly.
+                  Your message has been received. Our team will respond within one business day.
                 </div>
               )}
 
-              <form onSubmit={handleFormSubmit}>
+              {/* Task 8, 18: Rate limit warning — safe message, no technical detail */}
+              {rateLimited && (
+                <div className="ct-error-banner" role="alert">
+                  <span className="material-symbols-outlined" style={{ fontSize: 20 }}>timer</span>
+                  You have sent too many messages recently. Please wait a few minutes before trying again.
+                </div>
+              )}
+
+              <form onSubmit={handleFormSubmit} noValidate aria-label="Contact Noble Security Services">
+                {/* Task 16: Honeypot anti-bot field — hidden from real users, visible to bots */}
+                <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }}>
+                  <label htmlFor="hp-website">Website (leave blank)</label>
+                  <input
+                    id="hp-website"
+                    name="website"
+                    type="text"
+                    ref={honeypotRef}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+
                 <div className="ct-field-row">
                   <div className="ct-field">
-                    <label className="ct-label">Full Name</label>
-                    <input className="ct-input" type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="Rahul Sharma" disabled={isSubmitting} required />
+                    <label className="ct-label" htmlFor="ct-name">Full Name</label>
+                    <input
+                      id="ct-name"
+                      className={`ct-input${errors.name ? ' ct-input-error' : ''}`}
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      placeholder="Rahul Sharma"
+                      disabled={isSubmitting}
+                      required
+                      maxLength={100}
+                      aria-required="true"
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? 'ct-name-error' : undefined}
+                    />
+                    {errors.name && <span id="ct-name-error" className="ct-field-error" role="alert">{errors.name}</span>}
                   </div>
                   <div className="ct-field">
-                    <label className="ct-label">Email Address</label>
-                    <input className="ct-input" type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="rahul@example.com" disabled={isSubmitting} required />
+                    <label className="ct-label" htmlFor="ct-email">Email Address</label>
+                    <input
+                      id="ct-email"
+                      className={`ct-input${errors.email ? ' ct-input-error' : ''}`}
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="rahul@example.com"
+                      disabled={isSubmitting}
+                      required
+                      maxLength={254}
+                      aria-required="true"
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? 'ct-email-error' : undefined}
+                    />
+                    {errors.email && <span id="ct-email-error" className="ct-field-error" role="alert">{errors.email}</span>}
                   </div>
                 </div>
                 <div className="ct-field">
-                  <label className="ct-label">Subject</label>
-                  <select className="ct-select" name="subject" value={formData.subject} onChange={handleInputChange} disabled={isSubmitting}>
+                  <label className="ct-label" htmlFor="ct-subject">Subject</label>
+                  <select id="ct-subject" className="ct-select" name="subject" value={formData.subject} onChange={handleInputChange} disabled={isSubmitting} aria-label="Inquiry subject">
                     <option value="General Inquiry">General Inquiry</option>
                     <option value="Security Audit Request">Security Audit Request</option>
                     <option value="Housekeeping Services">Housekeeping Services</option>
@@ -500,10 +702,24 @@ export const Contact: React.FC = () => {
                   </select>
                 </div>
                 <div className="ct-field">
-                  <label className="ct-label">Message</label>
-                  <textarea className="ct-textarea" name="message" value={formData.message} onChange={handleInputChange} placeholder="Tell us about your security needs…" disabled={isSubmitting} required />
+                  <label className="ct-label" htmlFor="ct-message">Message</label>
+                  <textarea
+                    id="ct-message"
+                    className={`ct-textarea${errors.message ? ' ct-input-error' : ''}`}
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    placeholder="Tell us about your security needs…"
+                    disabled={isSubmitting}
+                    required
+                    maxLength={2000}
+                    aria-required="true"
+                    aria-invalid={!!errors.message}
+                    aria-describedby={errors.message ? 'ct-message-error' : undefined}
+                  />
+                  {errors.message && <span id="ct-message-error" className="ct-field-error" role="alert">{errors.message}</span>}
                 </div>
-                <button className="ct-submit" type="submit" disabled={isSubmitting}>
+                <button className="ct-submit" type="submit" disabled={isSubmitting} id="ct-submit-btn">
                   {isSubmitting ? (
                     <><div className="ct-spin" />Sending…</>
                   ) : (

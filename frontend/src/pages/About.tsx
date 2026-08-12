@@ -1,6 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useSEO } from "../hooks/useSEO";
 
 export const About: React.FC = () => {
+  // Task 1, 2: Programmatic SEO for About page
+  useSEO({
+    title: "About Us — Noble Security Services",
+    description:
+      "Learn about Noble Security Services — a veteran-led security agency in Sangli & Pune, Maharashtra. Our ex-military leadership and trained personnel protect lives and assets.",
+    canonical: "/about",
+    keywords:
+      "About Noble Security Services, Security Company Sangli, Military Grade Security Pune, Ex-Military Security Agency Maharashtra",
+    location: "all",
+  });
+
   // Hook for intersection observer scroll reveals
   const useReveal = (threshold = 0.1) => {
     const ref = useRef<HTMLDivElement>(null);

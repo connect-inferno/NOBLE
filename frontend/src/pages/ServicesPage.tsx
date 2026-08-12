@@ -1,10 +1,21 @@
 import React from "react";
+import { useSEO } from "../hooks/useSEO";
 
 interface ServicesPageProps {
   setCurrentPage: (page: string) => void;
 }
 
 export const ServicesPage: React.FC<ServicesPageProps> = ({ setCurrentPage }) => {
+  // Task 1, 2: Programmatic SEO for Services page
+  useSEO({
+    title: "Security Services in Sangli & Pune",
+    description:
+      "Explore Noble Security Services' full range: security guards, armed gunmen, bouncers, VIP protection, and corporate housekeeping across Sangli and Pune, Maharashtra.",
+    canonical: "/services",
+    keywords:
+      "Security Guards Sangli, Armed Gunmen Pune, Bouncers Maharashtra, VIP Protection Sangli, Corporate Housekeeping Pune, Industrial Security Services",
+    location: "all",
+  });
   const services = [
     {
       id: "guards",
