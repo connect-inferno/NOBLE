@@ -1,10 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<!--
+  sitemap.xml — Task 1: Programmatic SEO, Task 2: Location-based Routing & Dynamic SEO
+  All pages listed with lastmod, changefreq, and priority.
+  Submit to Google Search Console: https://search.google.com/search-console
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Home Page -->
   <url>
-    <loc>https://noblesecurityservices.com/</loc>
-    <lastmod>2026-06-28</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://www.noblesecurityservices.com/</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://www.noblesecurityservices.com/" />
+    <image:image>
+      <image:loc>https://www.noblesecurityservices.com/og-image.jpg</image:loc>
+      <image:caption>Noble Security Services — Professional Security Agency in Maharashtra</image:caption>
+    </image:image>
   </url>
+
+  <!-- About Page -->
+  <url>
+    <loc>https://www.noblesecurityservices.com/about</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://www.noblesecurityservices.com/about" />
+  </url>
+
+  <!-- Services Page -->
+  <url>
+    <loc>https://www.noblesecurityservices.com/services</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://www.noblesecurityservices.com/services" />
+  </url>
+
+  <!-- Clients Page -->
+  <url>
+    <loc>https://www.noblesecurityservices.com/clients</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://www.noblesecurityservices.com/clients" />
+  </url>
+
+  <!-- Contact Page -->
+  <url>
+    <loc>https://www.noblesecurityservices.com/contact</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://www.noblesecurityservices.com/contact" />
+  </url>
+
+  <!-- Privacy Policy Page -->
+  <url>
+    <loc>https://www.noblesecurityservices.com/privacy-policy</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Terms of Service Page -->
+  <url>
+    <loc>https://www.noblesecurityservices.com/terms-of-service</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Location-based SEO — Sangli (Task 2) -->
+  <url>
+    <loc>https://www.noblesecurityservices.com/security-services-sangli</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://www.noblesecurityservices.com/security-services-sangli" />
+  </url>
+
+  <!-- Location-based SEO — Pune (Task 2) -->
+  <url>
+    <loc>https://www.noblesecurityservices.com/security-services-pune</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en-IN" href="https://www.noblesecurityservices.com/security-services-pune" />
+  </url>
+
 </urlset>
-  

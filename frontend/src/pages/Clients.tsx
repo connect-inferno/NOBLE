@@ -1,10 +1,22 @@
 import React from "react";
+import { useSEO } from "../hooks/useSEO";
 
 interface ClientsProps {
   setCurrentPage?: (page: string) => void;
 }
 
 export const Clients: React.FC<ClientsProps> = ({ setCurrentPage }) => {
+  // Task 1, 2: Programmatic SEO for Clients page
+  useSEO({
+    title: "Our Clients — Trusted by Leading Organisations",
+    description:
+      "Noble Security Services is trusted by hospitals, government institutions, banks, schools, and industrial facilities across Sangli and Pune, Maharashtra.",
+    canonical: "/clients",
+    keywords:
+      "Noble Security Clients, Security Company Sangli Clients, Hospital Security Pune, Industrial Security Maharashtra, Government Security Services",
+    location: "all",
+  });
+
   const partners = [
     {
       name: "Kishore Infra Tech",

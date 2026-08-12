@@ -1,0 +1,64 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+# ── Task 6: Force HTTPS redirect ─────────────────────────────────────────
+[[redirects]]
+  from = "http://noblesecurityservices.com/*"
+  to = "https://www.noblesecurityservices.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.noblesecurityservices.com/*"
+  to = "https://www.noblesecurityservices.com/:splat"
+  status = 301
+  force = true
+
+# Redirect non-www to www
+[[redirects]]
+  from = "https://noblesecurityservices.com/*"
+  to = "https://www.noblesecurityservices.com/:splat"
+  status = 301
+  force = true
+
+# ── SPA routing — Task 2: Location-based Routing ─────────────────────────
+# Redirect all 404s back to index.html for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ── Tasks 6,7,14,15,17,26: HTTP Security Headers ─────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Task 6: HSTS
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    # Task 7: Security headers
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    X-DNS-Prefetch-Control = "off"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+    Cross-Origin-Opener-Policy = "same-origin"
+    Cross-Origin-Resource-Policy = "same-site"
+    # Task 15: CSP
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; frame-src https://www.google.com https://maps.google.com; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content;"
+    # Task 14: CORS
+    Access-Control-Allow-Origin = "https://www.noblesecurityservices.com"
+    Access-Control-Allow-Methods = "GET, OPTIONS"
+
+# Static assets — long-term caching (Task 17: SRI)
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    X-Content-Type-Options = "nosniff"
+
+# ── Task 18: Server-side Rate Limiting ───────────────────────────────────
+# Netlify does not support per-route rate limiting natively in netlify.toml.
+# Configure rate limiting in Netlify dashboard:
+#   Dashboard → Site → Security → Rate limiting
+# Recommended: 100 req/min per IP on all routes.
+# For advanced rate limiting, use Cloudflare in front of Netlify.

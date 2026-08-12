@@ -1,0 +1,187 @@
+##############################################################################
+# .htaccess — Apache / cPanel HTTP Security Configuration
+# Noble Security Services — noblesecurityservices.com
+#
+# Tasks:
+#   6  — Transport Security (HTTPS) — HSTS + HTTP→HTTPS redirect
+#   7  — Security Headers
+#   14 — CORS Configuration
+#   15 — Content Security Policy (CSP)
+#   16 — Bot Protection
+#   17 — Subresource Integrity (cache control)
+#   18 — Server-side Rate Limiting (mod_evasive)
+#   19 — Firewall Rules / WAF (mod_security)
+#   21 — Error Message Hardening
+#   24 — DDoS Protection (basic)
+#   26 — Clickjacking Protection
+#
+# Upload this file to your cPanel public_html/ directory.
+# Requires: mod_headers, mod_rewrite, mod_expires (enabled by default on cPanel)
+##############################################################################
+
+Options -Indexes -MultiViews
+ServerSignature Off
+
+# ── Enable mod_rewrite ───────────────────────────────────────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # ── Task 6: Force HTTPS redirect ────────────────────────────────────────
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Force www prefix
+  RewriteCond %{HTTP_HOST} !^www\. [NC]
+  RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # ── Task 2: SPA Routing — serve index.html for all routes ───────────────
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# ── Task 7: Security Headers ─────────────────────────────────────────────
+<IfModule mod_headers.c>
+
+  # Task 6: HSTS — Forces HTTPS for 1 year
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+  # Task 26: Clickjacking protection
+  Header always set X-Frame-Options "DENY"
+
+  # Task 7: Prevent MIME sniffing
+  Header always set X-Content-Type-Options "nosniff"
+
+  # Task 7: Referrer policy
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Task 7: Permissions policy
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+
+  # Task 7: Cross-origin policies
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Cross-Origin-Resource-Policy "same-site"
+
+  # Task 7: DNS prefetch control
+  Header always set X-DNS-Prefetch-Control "off"
+
+  # Remove server signature header
+  Header unset Server
+  Header unset X-Powered-By
+
+  # Task 14: CORS — restrict to same origin
+  Header always set Access-Control-Allow-Origin "https://www.noblesecurityservices.com"
+  Header always set Access-Control-Allow-Methods "GET, OPTIONS"
+  Header always set Access-Control-Allow-Headers "Content-Type"
+
+  # Task 15: Content Security Policy (CSP)
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; frame-src https://www.google.com https://maps.google.com; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content;"
+
+</IfModule>
+
+# ── Task 17: Static Asset Caching (SRI support) ──────────────────────────
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 1 day"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 6 months"
+  ExpiresByType image/png "access plus 6 months"
+  ExpiresByType image/webp "access plus 6 months"
+  ExpiresByType image/svg+xml "access plus 6 months"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType application/font-woff2 "access plus 1 year"
+  ExpiresByType application/xml "access plus 1 day"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Immutable cache for fingerprinted assets
+  <FilesMatch "\.(css|js|woff2|woff)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico)$">
+    Header set Cache-Control "public, max-age=15552000"
+  </FilesMatch>
+  <FilesMatch "\.(html)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+  </FilesMatch>
+</IfModule>
+
+# ── Task 16: Bot Protection ───────────────────────────────────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Block common bad bots by user-agent
+  RewriteCond %{HTTP_USER_AGENT} (MJ12bot|AhrefsBot|DotBot|BLEXBot|DataForSeoBot|PetalBot|SemrushBot) [NC]
+  RewriteRule .* - [F,L]
+
+  # Block requests with no user-agent (likely automated scanners)
+  RewriteCond %{HTTP_USER_AGENT} ^-?$
+  RewriteRule .* - [F,L]
+</IfModule>
+
+# ── Task 19: Firewall Rules — Block common attack patterns ────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Block SQL injection attempts in query string
+  RewriteCond %{QUERY_STRING} (union.*select|insert.*into|select.*from|drop.*table) [NC]
+  RewriteRule .* - [F,L]
+
+  # Block XSS attempts in query string
+  RewriteCond %{QUERY_STRING} (<script|javascript:|vbscript:|onload=|onerror=) [NC]
+  RewriteRule .* - [F,L]
+
+  # Block directory traversal
+  RewriteCond %{REQUEST_URI} (\.\./|\.\.\\) [NC]
+  RewriteRule .* - [F,L]
+
+  # Block shell injection
+  RewriteCond %{QUERY_STRING} (;|`|\||&&|\$\() [NC]
+  RewriteRule .* - [F,L]
+</IfModule>
+
+# ── Task 18: Basic Rate Limiting (mod_evasive) ────────────────────────────
+# Uncomment if mod_evasive is available on your cPanel host.
+# Contact your host to enable mod_evasive.
+#
+# <IfModule mod_evasive24.c>
+#   DOSHashTableSize 3097
+#   DOSPageCount 10
+#   DOSSiteCount 100
+#   DOSPageInterval 1
+#   DOSSiteInterval 1
+#   DOSBlockingPeriod 600
+# </IfModule>
+
+# ── Task 21: Error Message Hardening ────────────────────────────────────
+ErrorDocument 400 /index.html
+ErrorDocument 401 /index.html
+ErrorDocument 403 /index.html
+ErrorDocument 404 /index.html
+ErrorDocument 500 /index.html
+ErrorDocument 503 /index.html
+
+# ── Task 24: DDoS Protection — basic connection limits ───────────────────
+# Uncomment if your host supports these directives:
+# LimitRequestBody 10240000
+# LimitRequestFields 50
+# LimitRequestFieldSize 8190
+# LimitRequestLine 8190
+# Timeout 60
+# KeepAliveTimeout 5
+# MaxKeepAliveRequests 100
+
+# ── Block access to sensitive files ──────────────────────────────────────
+<FilesMatch "(^#.*#|\.(bak|config|dist|fla|inc|ini|log|psd|sh|sql|sw[op])|~)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# Block access to dotfiles (except .well-known for SSL challenge)
+<FilesMatch "^\.(?!well-known)">
+  Order allow,deny
+  Deny from all
+</FilesMatch>

@@ -167,7 +167,21 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
       <div className="border-t border-white/10 py-8 px-gutter">
         <div className="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-secondary-fixed-dim text-label-sm">
           <p>© 2026 Noble Security & Services. All Rights Reserved.</p>
-          <div className="flex gap-8">
+          <div className="flex gap-8 flex-wrap items-center justify-center">
+            {/* Task 30: Privacy Policy link */}
+            <button
+              onClick={() => handleNavClick("privacy-policy")}
+              className="hover:text-white transition-colors duration-200 cursor-pointer focus:outline-none"
+            >
+              Privacy Policy
+            </button>
+            {/* Task 31: Terms of Service link */}
+            <button
+              onClick={() => handleNavClick("terms-of-service")}
+              className="hover:text-white transition-colors duration-200 cursor-pointer focus:outline-none"
+            >
+              Terms of Service
+            </button>
             <p>
               Designed and Developed by{" "}
               <a
