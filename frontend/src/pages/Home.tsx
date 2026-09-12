@@ -789,8 +789,8 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
               <div className="space-y-4">
                 {[
                   { icon: "call", label: "Call Us Directly", value: "+91 9823245552" },
-                  { icon: "mail", label: "Email Inquiries", value: "info@noblesecurity.co.in" },
-                  { icon: "location_on", label: "Head Office", value: "Plot No. 15, Sector 4, Market Yard, Sangli, Maharashtra" },
+                  { icon: "mail", label: "Email Inquiries", value: "nss576215@gmail.com" },
+                  { icon: "location_on", label: "Head Office", value: "G-3, Girnar Tower, Opp. PNG Showroom, Sangli-Miraj Road, Vishrambag, Sangli – 416415, Maharashtra" },
                 ].map((c, i) => (
                   <div key={i} className="flex gap-4 items-start p-5 rounded-xl border border-[#eee] hover:border-primary hover:shadow-sm transition-all">
                     <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center shrink-0">
