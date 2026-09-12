@@ -59,21 +59,6 @@ export const Clients: React.FC<ClientsProps> = ({ setCurrentPage }) => {
       logo: <img src="/PB_Logo.png" alt="PB Logo" className="partner-logo" />,
     },
     {
-      name: "Kishore Infra Tech",
-      sector: "Infrastructure & Engineering",
-      logo: <img src="/kishore-Infra-tech.webp" alt="Kishore Infra Tech" className="partner-logo" />,
-    },
-    {
-      name: "Anand Sagar Trust",
-      sector: "Educational Institution",
-      logo: <img src="/anandsagar-edu-trust-logo.png" alt="Anand Sagar Education Trust" className="partner-logo" />,
-    },
-    {
-      name: "Brihanmumbai Municipal Corp",
-      sector: "Government & Public Sector",
-      logo: <img src="/bmc_logo.png" alt="BMC Logo" className="partner-logo" />,
-    },
-    {
       name: "SAEL Limited",
       sector: "Industrial & Green Energy",
       logo: <img src="/sael-logo.svg" alt="SAEL Logo" className="partner-logo" />,
@@ -108,11 +93,47 @@ export const Clients: React.FC<ClientsProps> = ({ setCurrentPage }) => {
       sector: "Government & Public Sector",
       logo: <img src="/itd.jpeg" alt="Income Tax Department Logo" className="partner-logo" />
     },
+    {
+      name: "Sunsure Energy Pvt Ltd",
+      sector: "Industrial and Green Energy",
+      logo: <img src="/ss.png" alt="Sunsure Energy Pvt Ltd Logo" className="partner-logo" />
+    },
+    {
+      name: "ELECTRONICS TEST AND DEVELOPMENT CENTRE",
+      sector: "Government of India",
+      logo: <img src="/etdc.png" alt="ELECTRONICS TEST AND DEVELOPMENT CENTRE Logo" className="partner-logo" />
+    },
+    {
+      name: "TEXTILE COMMITTEE MUMBAI",
+      sector: "Govt. of Textile Committee",
+      logo: <img src="/tc.png" alt="TEXTILE COMMITTEE MUMBAI Logo" className="partner-logo" />
+    },
+    {
+      name: "SONAK AUTOMOBILES PRIVATE LIMITED",
+      sector: "Automobiles",
+      logo: <img src="/st.jpg" alt="SONAK AUTOMOBILES PRIVATE LIMITED Logo" className="partner-logo" />
+    },
+    {
+      name: "ENVIRO INFRA ENGINEERS LIMITED",
+      sector: "Infrastructure & Engineering",
+      logo: <img src="/env.png" alt="ENVIRO INFRA ENGINEERS LIMITED Logo" className="partner-logo" />
+    },
+    {
+      name: "OFFICE OF THE ASSISTANT COMMISSIONER OF CUSTOMS ",
+      sector: "Government & Public Sector",
+      logo: <img src="/cust.jpg" alt="OFFICE OF THE ASSISTANT COMMISSIONER OF CUSTOMS Logo" className="partner-logo" />
+    },
+    {
+      name: "AIRPORT AUTHORITY OF INDIA",
+      sector: "Government Sector",
+      logo: <img src="/aai.png" alt="AIRPORT AUTHORITY OF INDIA Logo" className="partner-logo" />
+    },
+
   ];
 
-  const row1 = partners.slice(0, 5);
-  const row2 = partners.slice(5, 11);
-  const row3 = partners.slice(11, 18);
+  const row1 = partners.slice(0, 7);
+  const row2 = partners.slice(8, 15);
+  const row3 = partners.slice(16, 25);
 
   const sectors = [
     { icon: "factory", name: "Industrial", desc: "Comprehensive protection for manufacturing plants, warehouses, and logistics hubs." },
@@ -126,8 +147,8 @@ export const Clients: React.FC<ClientsProps> = ({ setCurrentPage }) => {
   ];
 
   const certifications = [
-    { icon: "verified_user", title: "PSARA Licensed", desc: "Maharashtra Private Security Agencies Regulation Act compliant." },
-    { icon: "receipt_long", title: "GST Registered", desc: "GSTIN: 27AHTPN6678H2ZE. Fully tax-compliant invoicing." },
+    { icon: "verified_user", title: "PSARA Licensed", desc: "Maharashtra & Karnataka Private Security Agencies Regulation Act compliant." },
+    { icon: "receipt_long", title: "GST Registered", desc: "GSTIN(Maharashtra): 27AHTPN6678H2ZE, GSTIN(Karnataka): 29AHTPN6678H1ZB." },
     { icon: "task_alt", title: "MSME Verified", desc: "Registered micro enterprise with corporate vendor compliance." },
     { icon: "gavel", title: "Govt Compliant", desc: "Strict adherence to ESIC, Provident Fund (PF), and labour laws." },
   ];
