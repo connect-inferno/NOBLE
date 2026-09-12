@@ -42,6 +42,11 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
             Noble Security
           </button>
           <p className="text-secondary-fixed-dim text-body-md leading-relaxed">
+            <b>GST Certified in Maharashtra and Karnataka.</b>
+            <p>GST No. (Maharashtra): 27AHTPN6678H2ZE</p>
+            <p>GST No. (Karnataka): 29AHTPN6678H1ZB</p>
+          </p>
+          <p className="text-secondary-fixed-dim text-body-md leading-relaxed">
             Premier provider of integrated security services, protecting lives and assets across Maharashtra through discipline, innovation, and ex-military leadership.
           </p>
           <div className="flex gap-4">
@@ -146,13 +151,19 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
             <li className="flex gap-3 items-start">
               <span className="material-symbols-outlined text-primary-fixed shrink-0">location_on</span>
               <span>
-                <strong>Sangli HQ:</strong> G-3, Girnar Tower, Opp. PNG Showroom, Sangli-Miraj Road, Vishrambag, Sangli – 416415, Maharashtra
+                <strong>Maharashtra HQ:</strong> G-3, Girnar Tower, Opp. PNG Showroom, Sangli-Miraj Road, Vishrambag, Sangli – 416415, Maharashtra
               </span>
             </li>
             <li className="flex gap-3 items-start">
               <span className="material-symbols-outlined text-primary-fixed shrink-0">location_on</span>
               <span>
                 <strong>Pune Branch:</strong> F-11, Building No. 33, Phase-II, Gahunje, Tal: Maval, Dist: Pune - 412101, Maharashtra
+              </span>
+            </li>
+            <li className="flex gap-3 items-start">
+              <span className="material-symbols-outlined text-primary-fixed shrink-0">location_on</span>
+              <span>
+                <strong>Karnataka HQ:</strong> 84 S_1, No. 330/333, H.No. 273/193, Rajaram Nagar, Udyambag, Belagavi, Karnataka – 590008
               </span>
             </li>
             <li className="flex gap-3 items-center">

@@ -114,7 +114,7 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
         let s = 0;
         const t = setInterval(() => {
           s++;
-          setStats({ guards: Math.min(Math.ceil(500 / steps * s), 500), cities: Math.min(Math.ceil(6 / steps * s), 6), experience: Math.min(Math.ceil(9 / steps * s), 9) });
+          setStats({ guards: Math.min(Math.ceil(500 / steps * s), 500), cities: Math.min(Math.ceil(6 / steps * s), 6), experience: Math.min(Math.ceil(10 / steps * s), 10) });
           if (s >= steps) clearInterval(t);
         }, interval);
       }
@@ -403,7 +403,7 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
         }
         @media (min-width: 768px) {
           .cert-grid {
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
           }
         }
         .cert-grid-item {
@@ -418,7 +418,7 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
           .cert-grid-item:nth-child(odd) {
             border-right: 1px solid rgba(255, 255, 255, 0.08);
           }
-          .cert-grid-item:nth-child(1), .cert-grid-item:nth-child(2) {
+          .cert-grid-item:nth-child(-n+4) {
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
           }
         }
@@ -545,7 +545,10 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
                 <img src="/ce3.png" alt="ISO 9001:2015" className="cert-strip-badge" />
               </div>
               <div className="cert-grid-item">
-                <img src="/ce4.png" alt="PSARA License" className="cert-strip-badge" />
+                <img src="/ce4.png" alt="PSARA License Maharashtra" className="cert-strip-badge" />
+              </div>
+              <div className="cert-grid-item">
+                <img src="/psara-karnataka.png" alt="PSARA License Karnataka" className="cert-strip-badge" />
               </div>
             </div>
           </div>
@@ -572,7 +575,7 @@ export const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
 
             <div className={`lg:w-[48%] grid grid-cols-2 gap-4 w-full reveal-right ${aboutVisible ? "visible" : ""}`} style={{ transitionDelay: "100ms" }}>
               {[
-                { icon: "timeline", label: "Our Journey", value: "9+ Years" },
+                { icon: "timeline", label: "Our Journey", value: "10+ Years" },
                 { icon: "military_tech", label: "Recognition", value: "Top Firm 2023" },
                 { icon: "groups", label: "Leadership", value: "Ex-Military" },
                 { icon: "map", label: "Coverage", value: "6+ Cities" },

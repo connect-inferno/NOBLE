@@ -89,22 +89,22 @@ export const About: React.FC = () => {
         {
           name: "Registered Head Office & Training Center",
           address: "G-3, Girnar Tower, Opp. PNG Showroom, Sangli-Miraj Road, Vishrambag, Sangli – 416415, Maharashtra",
-          phones: ["0233-3551723", "9158827123", "8484992853", "9112177123"]
+          phones: ["+919823245552", "+919158827123"]
         },
         {
           name: "Pune Office",
           address: "Address One, F-11, Building No. 33, Phase-II, Gahunje, Tal: Maval, Dist: Pune - 412101, Maharashtra",
-          phones: ["9765206467", "9112167123"]
+          phones: ["+919823245552", "+919158827123"]
         },
         {
           name: "Mumbai Office",
           address: "G-20-6, Floor- Loft, Municipal Chawl, Andhra Valley Road, Rajendra Prasad Nagar, M. L. Camp Matunga, Mumbai – 400019",
-          phones: ["9769936422", "9158827123"]
+          phones: ["+919823245552", "+919158827123"]
         },
         {
           name: "Ratnagiri Office",
           address: "F- 203, Building No. 13, Rahul Garden, Kaviltali, Chiplun, Tal: Chiplun, Dist: Ratnagiri – 415605",
-          phones: ["+91 8484992853", "+91 9158827123"]
+          phones: ["+919823245552", "+919158827123"]
         }
       ]
     },
@@ -113,8 +113,8 @@ export const About: React.FC = () => {
       offices: [
         {
           name: "Belagavi Office",
-          address: "No. 336, Ground Floor, Chavadi Galli, M. Vadgaon, Belgavi – 590005",
-          phones: ["9158827123", "8484992853"]
+          address: "84 S_1, No. 330/333, H.No. 273/193, Rajaram Nagar, Udyambag, Belagavi – 590008",
+          phones: ["+919823245552", "+919158827123"]
         }
       ]
     },
@@ -124,7 +124,7 @@ export const About: React.FC = () => {
         {
           name: "Delhi Office",
           address: "House No. 1033, Pole No. 46, Near Guggaji Park, Mundka Nangloi, West Delhi, Delhi - 110041",
-          phones: []
+          phones: ["+919823245552", "+919158827123"]
         }
       ]
     }
@@ -133,6 +133,9 @@ export const About: React.FC = () => {
   return (
     <>
       <style>{`
+        @import url('https://fonts.cdnfonts.com/css/ethnocentric');
+        @import url('https://fonts.cdnfonts.com/css/bookman-old-style');
+
         /* ── BASE ── */
         .ab-page { width: 100%; font-family: inherit; }
 
@@ -197,15 +200,32 @@ export const About: React.FC = () => {
           background: rgba(100,150,255,0.5);
         }
         .ab-hero-title {
-          font-size: clamp(2.4rem, 5vw, 4rem);
-          font-weight: 900;
-          color: #fff;
-          line-height: 1.05;
-          letter-spacing: -0.03em;
-          margin-bottom: 1.25rem;
-          max-width: 680px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.35rem;
+          margin-bottom: 1.5rem;
+          max-width: 720px;
         }
-        .ab-hero-title em { font-style: normal; color: #6ba3f5; }
+        .ab-brand-title-top {
+          font-family: 'Ethnocentric Rg', 'Ethnocentric', 'Orbitron', sans-serif;
+          font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          line-height: 1.1;
+          color: #fff;
+          text-transform: uppercase;
+        }
+        .ab-brand-title-sub {
+          font-family: 'Bookman Old Style', 'Clarendon', 'Playfair Display', 'Times New Roman', serif;
+          font-size: clamp(0.92rem, 2.1vw, 1.42rem);
+          font-weight: 900;
+          letter-spacing: 0.22em;
+          line-height: 1.2;
+          color: #6ba3f5;
+          text-transform: uppercase;
+          padding-left: 2px;
+        }
         .ab-hero-body {
           font-size: 1rem;
           color: rgba(255,255,255,0.42);
@@ -676,9 +696,14 @@ export const About: React.FC = () => {
           gap: 2rem;
           margin-top: 3rem;
         }
-        @media (min-width: 768px) {
+        @media (min-width: 640px) {
           .ab-certs-grid {
             grid-template-columns: repeat(2, 1fr);
+          }
+        }
+        @media (min-width: 1024px) {
+          .ab-certs-grid {
+            grid-template-columns: repeat(3, 1fr);
           }
         }
         .cert-card {
@@ -990,10 +1015,16 @@ export const About: React.FC = () => {
           transform: translateY(25px);
           transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
-        .ab-stagger.visible > *:nth-child(1) { opacity:1; transform:translateY(0); transition-delay: 0.1s; }
-        .ab-stagger.visible > *:nth-child(2) { opacity:1; transform:translateY(0); transition-delay: 0.2s; }
-        .ab-stagger.visible > *:nth-child(3) { opacity:1; transform:translateY(0); transition-delay: 0.3s; }
-        .ab-stagger.visible > *:nth-child(4) { opacity:1; transform:translateY(0); transition-delay: 0.4s; }
+        .ab-stagger.visible > * {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .ab-stagger.visible > *:nth-child(1) { transition-delay: 0.1s; }
+        .ab-stagger.visible > *:nth-child(2) { transition-delay: 0.2s; }
+        .ab-stagger.visible > *:nth-child(3) { transition-delay: 0.3s; }
+        .ab-stagger.visible > *:nth-child(4) { transition-delay: 0.4s; }
+        .ab-stagger.visible > *:nth-child(5) { transition-delay: 0.5s; }
+        .ab-stagger.visible > *:nth-child(6) { transition-delay: 0.6s; }
       `}</style>
 
       <div className="ab-page">
@@ -1010,7 +1041,8 @@ export const About: React.FC = () => {
             </div>
             <p className="ab-hero-eyebrow">ABOUT US</p>
             <h1 className="ab-hero-title">
-              Noble Security &<br /><em>Services</em>
+              <span className="ab-brand-title-top">NOBLE</span>
+              <span className="ab-brand-title-sub">SECURITY & SERVICES</span>
             </h1>
             <p className="ab-hero-body">
               An ISO 9001:2015 Certified Security Group Company providing a wide range of Security, Manpower, and Housekeeping Services. Delivering customized protection and peace of mind since 2015.
@@ -1304,14 +1336,14 @@ export const About: React.FC = () => {
                 { title: "Trade Mark Annexure", issuer: "Intellectual Property India, Government of India", img: "/c1.jpeg" },
                 { title: "Trade Mark Registration", issuer: "Trade Marks Registry, Government of India", img: "/c2.jpeg" },
                 { title: "ISO 9001:2015 Certification", issuer: "International Quality Certification Services UK Ltd", img: "/ce3.png" },
-                { title: "PSARA Security License", issuer: "Controlling Authority, Government of Maharashtra", img: "/ce4.png" },
+                { title: "PSARA Security License (Maharashtra)", issuer: "Controlling Authority, Government of Maharashtra", img: "/ce4.png" },
+                { title: "PSARA Security License (Karnataka)", issuer: "Controlling Authority, Government of Karnataka", img: "/psara-karnataka.png" },
               ].map((c, i) => (
                 <div key={i} className="cert-card">
                   <div className="cert-card-img-wrap">
                     <img src={c.img} alt={c.title} className="cert-card-img" />
                   </div>
-                  <h3 className="cert-card-title">Certification Name</h3>
-                  <p style={{ fontSize: "0.85rem", fontWeight: "600", color: "#666", marginBottom: "0.5rem" }}>{c.title}</p>
+                  <h3 className="cert-card-title">{c.title}</h3>
                   <p className="cert-card-issuer">Issued by: {c.issuer}</p>
                   <button className="cert-card-link" onClick={() => setActiveCert(c.img)}>
                     View Certificate

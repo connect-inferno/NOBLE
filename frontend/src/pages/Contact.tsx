@@ -251,14 +251,16 @@ export const Contact: React.FC = () => {
         .ct-info-cell {
           background: #fff;
           padding: 2.25rem 2rem;
-          display: flex; align-items: flex-start; gap: 1.25rem;
+          display: flex;
+          align-items: flex-start;
+          gap: 1.25rem;
           position: relative;
-          transition: background 0.25s;
+          transition: background 0.25s, box-shadow 0.25s;
         }
         .ct-info-cell::before {
           content: '';
           position: absolute; top: 0; left: 0;
-          width: 0; height: 2px;
+          width: 0; height: 3px;
           background: #0056b3;
           transition: width 0.35s ease;
         }
@@ -269,9 +271,41 @@ export const Contact: React.FC = () => {
           background: #eef3ff; border: 1px solid rgba(0,86,179,0.12);
           display: flex; align-items: center; justify-content: center;
           flex-shrink: 0;
+          margin-top: 2px;
         }
-        .ct-info-title { font-size: 0.88rem; font-weight: 800; color: #0a0c18; margin-bottom: 0.5rem; }
-        .ct-info-line { font-size: 0.8rem; color: #666; line-height: 1.7; }
+        .ct-info-content { flex: 1; min-width: 0; }
+        .ct-info-title { font-size: 0.92rem; font-weight: 800; color: #0a0c18; margin-bottom: 0.85rem; }
+        .ct-info-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .ct-info-item { display: flex; flex-direction: column; gap: 0.2rem; }
+        .ct-info-item:not(:last-child) {
+          padding-bottom: 0.75rem;
+          border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
+        }
+        .ct-info-label {
+          font-size: 0.72rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          color: #0056b3;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+        }
+        .ct-info-text { font-size: 0.82rem; color: #555; line-height: 1.55; }
+        .ct-info-link {
+          font-size: 0.84rem;
+          color: #333;
+          font-weight: 600;
+          text-decoration: none;
+          transition: color 0.2s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+        }
+        .ct-info-link:hover {
+          color: #0056b3;
+          text-decoration: underline;
+        }
 
         /* ── MAIN BODY — form + map ── */
         .ct-body {
@@ -583,30 +617,85 @@ export const Contact: React.FC = () => {
         {/* ── INFO CARDS ── */}
         <div className="ct-cards-wrap">
           <div className="ct-cards-inner">
-            {[
-              {
-                icon: "location_on",
-                title: "Office Locations",
-                lines: ["Plot No. 15, Sector 4, Market Yard, Sangli – 416416", "Pune Corporate Hub, Hinjewadi Phase 1, Pune – 411057"],
-              },
-              {
-                icon: "call",
-                title: "Call / WhatsApp",
-                lines: ["Main Operations: +91 9823245552", "WhatsApp Support: +91 9823245552"],
-              },
-              {
-                icon: "mail",
-                title: "Email Addresses",
-                lines: ["Inquiries: info@noblesecurity.co.in", "Careers: careers@noblesecurity.co.in"],
-              },
-            ].map((c, i) => (
+            {(
+              [
+                {
+                  icon: "location_on",
+                  title: "Office Locations",
+                  items: [
+                    {
+                      label: "Maharashtra HQ",
+                      text: "G-3, Girnar Tower, Opp. PNG Showroom, Sangli-Miraj Road, Vishrambag, Sangli – 416415",
+                    },
+                    {
+                      label: "Pune Branch",
+                      text: "F-11, Building No. 33, Phase-II, Gahunje, Tal: Maval, Dist: Pune – 412101",
+                    },
+                    {
+                      label: "Karnataka HQ",
+                      text: "84 S_1, No. 330/333, H.No. 273/193, Rajaram Nagar, Udyambag, Belagavi – 590008",
+                    },
+                  ],
+                },
+                {
+                  icon: "call",
+                  title: "Call / WhatsApp",
+                  items: [
+                    {
+                      label: "Main Operations",
+                      text: "+91 9823245552",
+                      href: "tel:+919823245552",
+                    },
+                    {
+                      label: "WhatsApp Support",
+                      text: "+91 9823245552",
+                      href: "https://wa.me/919823245552",
+                    },
+                    {
+                      label: "Customer Care",
+                      text: "+91 9850807123",
+                      href: "tel:+919850807123",
+                    },
+                  ],
+                },
+                {
+                  icon: "mail",
+                  title: "Email Addresses",
+                  items: [
+                    {
+                      label: "Inquiries",
+                      text: "nss576215@gmail.com",
+                      href: "mailto:nss576215@gmail.com",
+                    },
+                    {
+                      label: "Careers & Operations",
+                      text: "Operation.nss576215@gmail.com",
+                      href: "mailto:Operation.nss576215@gmail.com",
+                    },
+                  ],
+                },
+              ] as Array<{ icon: string; title: string; items: Array<{ label: string; text: string; href?: string }> }>
+            ).map((c, i) => (
               <div key={i} className="ct-info-cell">
                 <div className="ct-info-icon">
                   <span className="material-symbols-outlined" style={{ fontSize: 22, color: "#0056b3", fontVariationSettings: "'FILL' 1" }}>{c.icon}</span>
                 </div>
-                <div>
+                <div className="ct-info-content">
                   <div className="ct-info-title">{c.title}</div>
-                  {c.lines.map((l, j) => <div key={j} className="ct-info-line">{l}</div>)}
+                  <div className="ct-info-list">
+                    {c.items.map((item, j) => (
+                      <div key={j} className="ct-info-item">
+                        <span className="ct-info-label">{item.label}</span>
+                        {item.href ? (
+                          <a href={item.href} className="ct-info-link" target={item.href.startsWith("http") ? "_blank" : undefined} rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}>
+                            {item.text}
+                          </a>
+                        ) : (
+                          <span className="ct-info-text">{item.text}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}

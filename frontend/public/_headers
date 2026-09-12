@@ -45,8 +45,8 @@
   X-Frame-Options: DENY
 
   # ── Task 15: Content Security Policy (CSP) ──────────────────────────────
-  # Allowlist: self + Google Fonts + Google Maps iframe + WhatsApp/social links
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; frame-src https://www.google.com https://maps.google.com; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content;
+  # Allowlist: self + Google Fonts + CDN Fonts + Google Maps iframe + WhatsApp/social links
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.cdnfonts.com; font-src 'self' https://fonts.gstatic.com https://fonts.cdnfonts.com data:; img-src 'self' data: https: blob:; frame-src https://www.google.com https://maps.google.com; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content;
 
   # ── Task 14: CORS Configuration ─────────────────────────────────────────
   # Restrict cross-origin requests to the same origin
